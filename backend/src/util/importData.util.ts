@@ -3,6 +3,7 @@ import CourseModel from "../models/course.model";
 import courses from "../data/course.data";
 import apiResponseService from "../services/apiResponse.service";
 import users from "../data/user.data";
+import UserModel from "../models/user.model";
 
 
 
@@ -12,8 +13,8 @@ const importData = express.Router();
 importData.post(
     "/user",
     async (req, res) => {
-        await CourseModel.deleteMany({});
-        const importedCourses = await CourseModel.insertMany(users);
+        await UserModel.deleteMany({});
+        const importedCourses = await UserModel.insertMany(users);
         res.status(200).json(apiResponseService.success(
             importedCourses,
             200,

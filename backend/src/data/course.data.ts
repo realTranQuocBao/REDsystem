@@ -64,7 +64,7 @@ const courses = [
     },
     {
         "name": "Introduction to Blockchain Technology",
-        "category": "Technology",
+        "category": "Programming",
         "price": 32.99,
         "level": "Beginner",
         "duration": 23,
