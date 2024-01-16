@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 export interface ICreateCourseBody {
     name: string,
     category?: string,
@@ -6,6 +8,8 @@ export interface ICreateCourseBody {
     duration?: number,
     language?: string,
     instructor?: string,
+    createdBy?: mongoose.Types.ObjectId,
+    updatedBy?: mongoose.Types.ObjectId,
 }
 
 export interface IUpdateCourseBody {
@@ -16,6 +20,8 @@ export interface IUpdateCourseBody {
     duration?: number,
     language?: string,
     instructor?: string,
+    createdBy?: mongoose.Types.ObjectId,
+    updatedBy?: mongoose.Types.ObjectId,
 }
 export interface IUpdateCourseParam {
     id: string

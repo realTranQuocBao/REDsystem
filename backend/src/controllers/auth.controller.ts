@@ -5,10 +5,9 @@ import apiResponseService from "../services/apiResponse.service";
 import { IForgotPasswordBody, IResetPasswordBody, IResetPasswordParam, ISignInBody, ISignUpBody } from "../interfaces/IUser.interface";
 import UserModel from "../models/user.model";
 import ResetPasswordModel from "../models/resetPassword.model";
-import env from "../util/validateEnv";
+import env from "../utils/validateEnv.util";
 import mongoose from "mongoose";
-
-
+import generateAuthToken from "../utils/generateToken.util";
 
 /**
  * SIGN UP
@@ -74,8 +73,13 @@ const signIn: RequestHandler<unknown, unknown, ISignInBody, unknown> = async (re
             throw createHttpError(401, "Invalid credentials!");
         }
 
+        const token = generateAuthToken(user._id);
         res.status(200).json(apiResponseService.success(
-            user,
+            {
+                ...user.toObject(),
+                accessToken: token.accessToken,
+                refreshToken: token.refreshToken
+            },
             200,
             "Sign in successfully!"
         ));

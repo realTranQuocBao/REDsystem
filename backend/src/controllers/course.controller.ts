@@ -5,13 +5,12 @@ import mongoose from "mongoose";
 import { ICreateCourseBody, IUpdateCourseBody, IUpdateCourseParam } from "../interfaces/ICourse.interface";
 import apiResponseService from "../services/apiResponse.service";
 
-
-
 /**
  * [C]reate
  */
 const create: RequestHandler<unknown, unknown, ICreateCourseBody, unknown> = async (req, res, next) => {
-
+    // Get the authenticated user id
+    const userId = res.locals?.jwtPayload?._id;
 
     const name = req.body.name;
     const category = req.body.category;
@@ -26,7 +25,7 @@ const create: RequestHandler<unknown, unknown, ICreateCourseBody, unknown> = asy
             throw createHttpError(400, "Course must have a name!");
         }
 
-        const newItem = await CourseModel.create({
+        const newCourse = await CourseModel.create({
             name: name,
             category: category,
             price: price,
@@ -34,10 +33,14 @@ const create: RequestHandler<unknown, unknown, ICreateCourseBody, unknown> = asy
             duration: duration,
             language: language,
             instructor: instructor,
+            createdBy: userId,
+            updatedBy: userId
         });
+        await newCourse.populate('createdBy', '_id name email')
+        await newCourse.populate('updatedBy', '_id name email');
 
         res.status(201).json(apiResponseService.success(
-            newItem,
+            newCourse,
             201,
             "Course created successfully!"
         ));
@@ -58,7 +61,10 @@ const getAll: RequestHandler = async (req, res, next) => {
     try {
         const courses = await CourseModel.find({
             deletedAt: deleted ? { $ne: null } : null
-        }).exec();
+        })
+            .populate("createdBy", "_id name email")
+            .populate("updatedBy", "_id name email")
+            .exec();
 
         res.status(200).json(apiResponseService.success(
             courses,
@@ -82,7 +88,10 @@ const getById: RequestHandler = async (req, res, next) => {
         const course = await CourseModel.findOne({
             _id: courseId,
             deletedAt: deleted ? { $ne: null } : null
-        }).exec();
+        })
+            .populate("createdBy", "_id name email")
+            .populate("updatedBy", "_id name email")
+            .exec();
 
         if (!course) {
             throw createHttpError(404, "Course not found!");
@@ -102,6 +111,9 @@ const getById: RequestHandler = async (req, res, next) => {
  * [U]pdate
  */
 const update: RequestHandler<IUpdateCourseParam, unknown, IUpdateCourseBody, unknown> = async (req, res, next) => {
+    // Get the authenticated user id
+    const userId = res.locals?.jwtPayload?._id;
+
     const courseId = req.params.id;
 
     try {
@@ -111,9 +123,9 @@ const update: RequestHandler<IUpdateCourseParam, unknown, IUpdateCourseBody, unk
 
         const updatedCourse = await CourseModel.findOneAndUpdate(
             { _id: courseId, deletedAt: null },
-            { $set: req.body },
+            { $set: req.body, updatedBy: userId },
             { new: true }
-        );
+        ).populate('createdBy', '_id name email').populate('updatedBy', '_id name email');
 
         if (!updatedCourse) {
             throw createHttpError(404, "Course not found!");
@@ -129,6 +141,9 @@ const update: RequestHandler<IUpdateCourseParam, unknown, IUpdateCourseBody, unk
     }
 }
 const restore: RequestHandler = async (req, res, next) => {
+    // Get the authenticated user id
+    const userId = res.locals?.jwtPayload?._id;
+
     const courseId = req.params.id;
 
     try {
@@ -139,9 +154,9 @@ const restore: RequestHandler = async (req, res, next) => {
         // Soft delete: Update 'deletedAt' to the current timestamp
         const restoredCourse = await CourseModel.findOneAndUpdate(
             { _id: courseId, deletedAt: { $ne: null } },
-            { deletedAt: null },
+            { deletedAt: null, updatedBy: userId },
             { new: true }
-        );
+        ).populate('createdBy', '_id name email').populate('updatedBy', '_id name email');
 
         if (!restoredCourse) {
             throw createHttpError(404, "Course not found OR Course not in trash!");
@@ -162,6 +177,9 @@ const restore: RequestHandler = async (req, res, next) => {
  * [D]elete
  */
 const softDelete: RequestHandler = async (req, res, next) => {
+    // Get the authenticated user id
+    const userId = res.locals?.jwtPayload?._id;
+
     const courseId = req.params.id;
 
     try {
@@ -178,7 +196,7 @@ const softDelete: RequestHandler = async (req, res, next) => {
         if (course.deletedAt === null) {
             // Soft delete: Update 'deletedAt' to the current timestamp
             await CourseModel.findByIdAndUpdate(courseId,
-                { deletedAt: new Date() },
+                { deletedAt: new Date(), updatedBy: userId },
                 { new: true }
             );
 

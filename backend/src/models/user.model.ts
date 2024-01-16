@@ -6,7 +6,9 @@ const UserSchema = new Schema({
     password: { type: String, required: true, select: false },
     isAdmin: { type: Boolean, required: false, default: false },
     isDisabled: { type: Boolean, required: false, default: false },
-    deletedAt: { type: Date, default: null }
+    deletedAt: { type: Date, default: null },
+    createdBy: { type: Schema.Types.ObjectId, ref: 'User', default: null },
+    updatedBy: { type: Schema.Types.ObjectId, ref: 'User', default: null },
 }, { timestamps: true });
 
 type User = InferSchemaType<typeof UserSchema>;

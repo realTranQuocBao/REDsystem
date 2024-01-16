@@ -19,6 +19,12 @@ const errorHandler = (error: Error, req: Request, res: Response, next: NextFunct
         errorMessage = error.message;
     }
 
+    //if err is `jwt expired`
+    if (error.message == "jwt expired" || error.message == "invalid signature") {
+        statusCode = 403;
+        errorMessage = "Not authorized, token failed";
+    }
+
     if (Math.floor(statusCode / 100) === 2) {
         isSuccess = true;
     }

@@ -6,12 +6,13 @@ import apiResponseService from "../services/apiResponse.service";
 import { ISignUpBody as ICreateUserBody, IUpdateUserBody, IUpdateUserParam } from "../interfaces/IUser.interface";
 import UserModel from "../models/user.model";
 
-
-
 /**
  * [C]reate
  */
 const create: RequestHandler<unknown, unknown, ICreateUserBody, unknown> = async (req, res, next) => {
+    // Get the authenticated user id
+    const userId = res.locals?.jwtPayload?._id;
+
     const name = req.body.name;
     const email = req.body.email;
     const passwordRaw = req.body.password;
@@ -36,7 +37,11 @@ const create: RequestHandler<unknown, unknown, ICreateUserBody, unknown> = async
             password: passwordHashed,
             isAdmin: isAdmin,
             isDisabled: isDisabled,
+            createdBy: userId,
+            updatedBy: userId
         });
+        await newUser.populate('createdBy', '_id name email')
+        await newUser.populate('updatedBy', '_id name email');
 
         res.status(201).json(apiResponseService.success(
             newUser,
@@ -60,7 +65,10 @@ const getAll: RequestHandler = async (req, res, next) => {
     try {
         const users = await UserModel.find({
             deletedAt: deleted ? { $ne: null } : null
-        }).exec();
+        })
+            .populate("createdBy", "_id name email")
+            .populate("updatedBy", "_id name email")
+            .exec();
 
         res.status(200).json(apiResponseService.success(
             users,
@@ -84,7 +92,10 @@ const getById: RequestHandler = async (req, res, next) => {
         const user = await UserModel.findOne({
             _id: userId,
             deletedAt: deleted ? { $ne: null } : null
-        }).exec();
+        })
+            .populate("createdBy", "_id name email")
+            .populate("updatedBy", "_id name email")
+            .exec();
 
         if (!user) {
             throw createHttpError(404, "User not found!");
@@ -104,6 +115,9 @@ const getById: RequestHandler = async (req, res, next) => {
  * [U]pdate
  */
 const update: RequestHandler<IUpdateUserParam, unknown, IUpdateUserBody, unknown> = async (req, res, next) => {
+    // Get the authenticated user id
+    const actionUserId = res.locals?.jwtPayload?._id;
+
     const userId = req.params.id;
 
     try {
@@ -113,9 +127,9 @@ const update: RequestHandler<IUpdateUserParam, unknown, IUpdateUserBody, unknown
 
         const updatedUser = await UserModel.findOneAndUpdate(
             { _id: userId, deletedAt: null },
-            { $set: req.body },
+            { $set: req.body, updatedBy: actionUserId },
             { new: true }
-        );
+        ).populate('createdBy', '_id name email').populate('updatedBy', '_id name email');
 
         if (!updatedUser) {
             throw createHttpError(404, "User not found!");
@@ -131,6 +145,9 @@ const update: RequestHandler<IUpdateUserParam, unknown, IUpdateUserBody, unknown
     }
 }
 const restore: RequestHandler = async (req, res, next) => {
+    // Get the authenticated user id
+    const actionUserId = res.locals?.jwtPayload?._id;
+
     const userId = req.params.id;
 
     try {
@@ -141,9 +158,9 @@ const restore: RequestHandler = async (req, res, next) => {
         // Soft delete: Update 'deletedAt' to the current timestamp
         const restoredUser = await UserModel.findOneAndUpdate(
             { _id: userId, deletedAt: { $ne: null } },
-            { deletedAt: null },
+            { deletedAt: null, updatedBy: actionUserId },
             { new: true }
-        );
+        ).populate('createdBy', '_id name email').populate('updatedBy', '_id name email');
 
         if (!restoredUser) {
             throw createHttpError(404, "User not found OR User not in trash!");
@@ -164,6 +181,9 @@ const restore: RequestHandler = async (req, res, next) => {
  * [D]elete
  */
 const softDelete: RequestHandler = async (req, res, next) => {
+    // Get the authenticated user id
+    const actionUserId = res.locals?.jwtPayload?._id;
+
     const userId = req.params.id;
 
     try {
@@ -180,7 +200,7 @@ const softDelete: RequestHandler = async (req, res, next) => {
         if (user.deletedAt === null) {
             // Soft delete: Update 'deletedAt' to the current timestamp
             await UserModel.findByIdAndUpdate(userId,
-                { deletedAt: new Date() },
+                { deletedAt: new Date(), updatedBy: actionUserId },
                 { new: true }
             );
 

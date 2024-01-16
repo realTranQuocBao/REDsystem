@@ -16,10 +16,9 @@ const CourseSchema = new Schema({
     duration: { type: Number, default: null },  // Estimated duration in hours
     language: { type: String, default: null }, // Primary language of instruction
     instructor: { type: String, default: null },
-    deletedAt: {
-        type: Date,
-        default: null
-    }
+    deletedAt: { type: Date, default: null },
+    createdBy: { type: Schema.Types.ObjectId, ref: 'User', default: null },
+    updatedBy: { type: Schema.Types.ObjectId, ref: 'User', default: null },
 }, { timestamps: true });
 
 type Course = InferSchemaType<typeof CourseSchema>;
