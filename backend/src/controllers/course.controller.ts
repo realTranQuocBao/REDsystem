@@ -1,7 +1,7 @@
 import { RequestHandler } from "express";
 import CourseModel from "../models/course.model";
 import createHttpError from "http-errors";
-import mongoose from "mongoose";
+import mongoose, { SortOrder } from "mongoose";
 import { ICreateCourseBody, IUpdateCourseBody, IUpdateCourseParam } from "../interfaces/ICourse.interface";
 import apiResponseService from "../services/apiResponse.service";
 
@@ -55,15 +55,66 @@ const create: RequestHandler<unknown, unknown, ICreateCourseBody, unknown> = asy
 // Read (all items)
 const getAll: RequestHandler = async (req, res, next) => {
 
+    // Sort
+    const sortField = (<string | null>req.query.sort) || 'createdat';
+    const sortOrder: SortOrder = req.query.order === 'desc' ? -1 : 1;
+    type FieldMappings = {
+        name: string;
+        createdat: string;
+        updatedat: string;
+        category: string;
+        price: string;
+        level: string;
+        duration: string;
+        language: string;
+        instructor: string;
+        [key: string]: string;
+    };
+    const fieldMappings: FieldMappings = {
+        name: 'name',
+        createdat: 'createdAt',
+        updatedat: 'updatedAt',
+        category: 'category',
+        price: 'price',
+        level: 'level',
+        duration: 'duration',
+        language: 'language',
+        instructor: 'instructor',
+    };
+    const actualSortField: string = fieldMappings[sortField] || 'createdAt';
+    const sortOptions = { [actualSortField]: sortOrder };
+
+    // Filter
+    const filterBy = <string | null>req.query.filterby;
+    const filterQuery = <string | null>req.query.filterquery;
+    const query: Record<string, any> = {};
+    if (filterBy && filterQuery) {
+        const validFields = ['category', 'level', 'language', 'instructor'];
+        if (validFields.includes(filterBy)) {
+            query[filterBy] = {
+                $regex: new RegExp(filterQuery, 'i'),
+            };
+        }
+    }
+
+    // Search
+    const searchQuery = req.query.search;
+    // If search query exists, include the "name" field in the query
+    if (searchQuery) {
+        query.name = { $regex: searchQuery, $options: 'i' };
+    }
+
     // If deleted===true (Read all items soft-deleted)
     const deleted = (req?.query?.deleted === "true") ? true : false;
 
     try {
         const courses = await CourseModel.find({
+            ...query,
             deletedAt: deleted ? { $ne: null } : null
         })
             .populate("createdBy", "_id name email")
             .populate("updatedBy", "_id name email")
+            .sort(sortOptions)
             .exec();
 
         res.status(200).json(apiResponseService.success(
