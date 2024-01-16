@@ -10,6 +10,37 @@ import mongoose from "mongoose";
 import generateAuthToken from "../utils/generateToken.util";
 
 /**
+ * GET AUTHENTICATED INFORMATION 
+ */
+const getAuthenInfor: RequestHandler = async (req, res, next) => {
+    // Get the authenticated user id
+    const userId = res.locals?.jwtPayload?._id;
+
+    try {
+
+        if (!mongoose.isValidObjectId(userId)) {
+            throw createHttpError(403, 'Not authorized, token failed');
+        }
+
+        const user = await UserModel.findById(userId)
+            .populate('createdBy', '_id name email')
+            .populate('updatedBy', '_id name email')
+            .exec();
+        if (!user) {
+            throw createHttpError(403, 'Not authorized, token failed');
+        }
+
+        res.status(200).json(apiResponseService.success(
+            user,
+            200,
+            "Get authenticated information successfully!"
+        ));
+    } catch (error) {
+        next(error);
+    }
+}
+
+/**
  * SIGN UP
  */
 const signUp: RequestHandler<unknown, unknown, ISignUpBody, unknown> = async (req, res, next) => {
@@ -205,6 +236,7 @@ const resetPassword: RequestHandler<IResetPasswordParam, unknown, IResetPassword
 
 
 const AuthController = {
+    getAuthenInfor,
     signUp,
     signIn,
     signOut,
