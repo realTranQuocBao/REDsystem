@@ -103,7 +103,6 @@ const getById: RequestHandler = async (req, res, next) => {
  */
 const update: RequestHandler<IUpdateCourseParam, unknown, IUpdateCourseBody, unknown> = async (req, res, next) => {
     const courseId = req.params.id;
-    console.log(req.query);
 
     try {
         if (!mongoose.isValidObjectId(courseId)) {

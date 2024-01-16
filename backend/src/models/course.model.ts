@@ -24,4 +24,6 @@ const CourseSchema = new Schema({
 
 type Course = InferSchemaType<typeof CourseSchema>;
 
-export default model<Course>("Course", CourseSchema);
+const CourseModel = model<Course>("Course", CourseSchema);
+
+export default CourseModel;
