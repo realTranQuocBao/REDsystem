@@ -8,13 +8,8 @@ const routes = (app: Application) => {
 
 
     app.use('/favicon.ico', express.static('public/images/favicon.ico'));
-    app.get("/", (req, res, next) => {
-        try {
-            throw Error("hihi");
-        } catch (error) {
-            next(error);
-        }
-        res.send("Hello Bao <3");
+    app.get("/", (req, res) => {
+        res.send(`Welcome to REDsystem API <3 (16-Jan-2024)`);
     });
 }
 

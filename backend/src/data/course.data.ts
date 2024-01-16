@@ -6,9 +6,7 @@ const courses = [
         "level": "Beginner",
         "duration": 20,
         "language": "English",
-        "instructors": [
-            { "name": "Dr. Jane Smith", "bio": "Data scientist with expertise in Python and machine learning." }
-        ]
+        "instructor": "Mark Zuckerberg"
     },
     {
         "name": "Web Design Bootcamp: From Sketch to Production Ready Websites",
@@ -17,10 +15,7 @@ const courses = [
         "level": "Beginner",
         "duration": 25,
         "language": "English",
-        "instructors": [
-            { "name": "Dr. Zuck", "bio": "CEO of FB." },
-            { "name": "Dr. Bao", "bio": "CEO of TQB." }
-        ]
+        "instructor": "Dr. Bao, Dr. Zuck"
     },
     {
         "name": "Advanced JavaScript: Modern Frontend Development",
@@ -29,9 +24,7 @@ const courses = [
         "level": "Advanced",
         "duration": 30,
         "language": "English",
-        "instructors": [
-            { "name": "Prof. James Smith", "bio": "Full-stack developer with expertise in JavaScript frameworks." }
-        ]
+        "instructor": "Prof. James Smith"
     },
     {
         "name": "Digital Marketing Mastery: Strategies for Success",
@@ -40,9 +33,7 @@ const courses = [
         "level": "Intermediate",
         "duration": 22,
         "language": "English",
-        "instructors": [
-            { "name": "Dr. Marketing Guru", "bio": "Digital marketing expert with proven success in online campaigns." }
-        ]
+        "instructor": "Dr. Marketing Guru"
     },
     {
         "name": "Business Analytics: Transforming Data into Insights",
@@ -51,11 +42,7 @@ const courses = [
         "level": "Advanced",
         "duration": 35,
         "language": "English",
-        "instructors": [
-            { "name": "Prof. Business Analyst", "bio": "Experienced business analyst specializing in data-driven decision-making." },
-            { "name": "Blockchain Expert", "bio": "Experienced blockchain developer demystifying blockchain technology." },
-            { "name": "Dr. Marketing Guru", "bio": "Digital marketing expert with proven success in online campaigns." },
-        ]
+        "instructor": "Elon Musk"
     },
     {
         "name": "UI/UX Design Principles: Creating User-Centric Interfaces",
@@ -64,9 +51,7 @@ const courses = [
         "level": "Intermediate",
         "duration": 28,
         "language": "English",
-        "instructors": [
-            { "name": "Dr. UI/UX Designer", "bio": "UI/UX expert with a passion for creating intuitive and visually appealing designs." }
-        ]
+        "instructor": "Tim Cook"
     },
     {
         "name": "Personal Development Mastery: Unlocking Your Full Potential",
@@ -75,9 +60,7 @@ const courses = [
         "level": "Intermediate",
         "duration": 18,
         "language": "English",
-        "instructors": [
-            { "name": "Motivational Speaker", "bio": "Inspirational speaker and life coach empowering individuals for personal growth." }
-        ]
+        "instructor": "Jack Ma"
     },
     {
         "name": "Introduction to Blockchain Technology",
@@ -86,9 +69,7 @@ const courses = [
         "level": "Beginner",
         "duration": 23,
         "language": "English",
-        "instructors": [
-            { "name": "Blockchain Expert", "bio": "Experienced blockchain developer demystifying blockchain technology." }
-        ]
+        "instructor": "Bill Gates"
     },
     {
         "name": "Data Visualization with D3.js",
@@ -97,9 +78,7 @@ const courses = [
         "level": "Intermediate",
         "duration": 21,
         "language": "English",
-        "instructors": [
-            { "name": "Data Viz Pro", "bio": "Expert in data visualization using D3.js for impactful presentations." }
-        ]
+        "instructor": "Mark Zuckerberg"
     },
     {
         "name": "E-commerce Strategies: Building a Successful Online Store",
@@ -108,9 +87,7 @@ const courses = [
         "level": "Advanced",
         "duration": 32,
         "language": "English",
-        "instructors": [
-            { "name": "E-commerce Specialist", "bio": "Strategist guiding businesses in creating and optimizing e-commerce platforms." }
-        ]
+        "instructor": "Mr. Peter"
     },
     {
         "name": "Machine Learning Fundamentals: A Practical Approach",
@@ -119,9 +96,7 @@ const courses = [
         "level": "Intermediate",
         "duration": 26,
         "language": "English",
-        "instructors": [
-            { "name": "ML Expert", "bio": "Machine learning practitioner providing hands-on guidance for beginners." }
-        ]
+        "instructor": "Mr. Michael"
     },
     {
         "name": "Graphic Design Essentials: Creating Visually Stunning Artwork",
@@ -130,9 +105,7 @@ const courses = [
         "level": "Intermediate",
         "duration": 24,
         "language": "English",
-        "instructors": [
-            { "name": "Graphic Design Pro", "bio": "Creative artist with expertise in graphic design principles and tools." }
-        ]
+        "instructor": "Mr. Join"
     },
     {
         "name": "Leadership in the Digital Age: Navigating Business Challenges",
@@ -141,10 +114,7 @@ const courses = [
         "level": "Advanced",
         "duration": 30,
         "language": "English",
-        "instructors": [
-            { "name": "Digital Leader", "bio": "Experienced leader navigating business challenges in the digital era." },
-            { "name": "Digital Leader 2", "bio": "./." }
-        ]
+        "instructor": "Ms. Mary"
     },
     {
         "name": "React.js Fundamentals: Building Modern Web Applications",
@@ -153,9 +123,7 @@ const courses = [
         "level": "Intermediate",
         "duration": 28,
         "language": "English",
-        "instructors": [
-            { "name": "React Pro", "bio": "Experienced React.js developer guiding learners in building dynamic web applications." }
-        ]
+        "instructor": "Mrs. Ngan Pham"
     }
 ];
 
