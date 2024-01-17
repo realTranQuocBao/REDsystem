@@ -10,7 +10,7 @@ const routes = (app: Application) => {
     app.use("/api/v1/import", importData);
 
     app.use("/api/v1/auth", AuthRoute);
-    app.use("/api/v1/course", auth, CourseRoute);
+    app.use("/api/v1/course", CourseRoute);
     app.use("/api/v1/user", auth, UserRoute);
 
 

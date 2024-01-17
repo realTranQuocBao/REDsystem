@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import { RequestHandler } from "express";
 import createHttpError from "http-errors";
 import apiResponseService from "../services/apiResponse.service";
-import { IForgotPasswordBody, IResetPasswordBody, IResetPasswordParam, ISignInBody, ISignUpBody } from "../interfaces/IUser.interface";
+import { IForgotPasswordBody, IResetPasswordBody, ISignInBody, ISignUpBody } from "../interfaces/IUser.interface";
 import UserModel from "../models/user.model";
 import ResetPasswordModel from "../models/resetPassword.model";
 import env from "../utils/validateEnv.util";
@@ -90,18 +90,18 @@ const signIn: RequestHandler<unknown, unknown, ISignInBody, unknown> = async (re
 
     try {
         if (!email || !passwordRaw) {
-            throw createHttpError(400, "Missing parameter(s)!");
+            throw createHttpError(400, "Missing login information!");
         }
 
         const user = await UserModel.findOne({ email }).select("+password").exec();
         if (!user) {
-            throw createHttpError(401, "Invalid credentials!");
+            throw createHttpError(401, "Invalid credentials! Email or password is wrong, please try again!");
         }
 
         const passwordMatch = await bcrypt.compare(passwordRaw, user.password);
         if (!passwordMatch) {
             // Warning of failed login! -> ex: email, sms,...
-            throw createHttpError(401, "Invalid credentials!");
+            throw createHttpError(401, "Invalid credential! Email or password is wrong, please try again!!");
         }
 
         const token = generateAuthToken(user._id);
@@ -183,9 +183,9 @@ const forgotPassword: RequestHandler<unknown, unknown, IForgotPasswordBody, unkn
 /**
  * RESET PASSWORD
  */
-const resetPassword: RequestHandler<IResetPasswordParam, unknown, IResetPasswordBody, unknown> = async (req, res, next) => {
+const resetPassword: RequestHandler<unknown, unknown, IResetPasswordBody, unknown> = async (req, res, next) => {
 
-    const keyResetPassword = req.params.key;
+    const keyResetPassword = req.body.key;
     const newPasswordRaw = req.body.newPassword;
 
     try {
