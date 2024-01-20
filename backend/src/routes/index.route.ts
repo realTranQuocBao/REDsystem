@@ -3,7 +3,7 @@ import CourseRoute from "./course.route"
 import importData from "../utils/importData.util";
 import AuthRoute from "./auth.route";
 import UserRoute from "./user.route";
-import { auth } from "../middlewares/auth.middleware";
+import { admin, auth } from "../middlewares/auth.middleware";
 
 
 const routes = (app: Application) => {
@@ -11,7 +11,7 @@ const routes = (app: Application) => {
 
     app.use("/api/v1/auth", AuthRoute);
     app.use("/api/v1/course", auth, CourseRoute);
-    app.use("/api/v1/user", auth, UserRoute);
+    app.use("/api/v1/user", auth, admin, UserRoute);
 
 
     app.use('/favicon.ico', express.static('public/images/favicon.ico'));

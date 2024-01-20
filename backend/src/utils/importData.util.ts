@@ -1,8 +1,8 @@
 import express from "express";
 import CourseModel from "../models/course.model";
-import courses from "../data/course.data";
+import courses from "../datas/course.data";
 import apiResponseService from "../services/apiResponse.service";
-import users from "../data/user.data";
+import users from "../datas/user.data";
 import UserModel from "../models/user.model";
 
 

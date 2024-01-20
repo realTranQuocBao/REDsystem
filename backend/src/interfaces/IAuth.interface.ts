@@ -19,5 +19,5 @@ export interface ICustomRequestAuth extends Request {
         deletedAt: Date | null;
         createdAt: Date | null;
         updatedAt: Date | null;
-    }
+    };
 }
