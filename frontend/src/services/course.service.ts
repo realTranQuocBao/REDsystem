@@ -2,6 +2,8 @@ import apiService from "./_base.service";
 
 class CourseService {
     get = async (params: (object | null)) => {
+        console.log("process.env?.PUBLIC_URL", process.env);
+
         return await apiService.get("/course", { params: params });
     };
 

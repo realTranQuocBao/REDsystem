@@ -3,9 +3,10 @@ import { ICourse, ICourseFormValues } from "models/course.model";
 import courseService from "services/course.service";
 import useLoading from "hooks/useLoading.hook";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 const CourseCreatePage = () => {
-  const [course, setCourse] = useState<ICourse | null>(null);
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const {
     register,
@@ -34,7 +35,7 @@ const CourseCreatePage = () => {
           alertify.success((res as any).message);
         }
 
-        window.location.replace(`/course/edit/${(res as any)?.data.items._id}`);
+        return navigate(`/course/edit/${(res as any)?.data.items._id}`);
       })
       .catch((err) => {
         setLoading(false);
@@ -49,7 +50,7 @@ const CourseCreatePage = () => {
   //  {errors.name && <p>{errors.name.message}</p>}
 
   const backToList = () => {
-    window.location.replace("/course");
+    navigate("/course");
   };
 
   return (

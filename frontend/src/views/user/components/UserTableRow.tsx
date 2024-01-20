@@ -12,8 +12,10 @@ import { IUser } from "models/user.model";
 import userService from "services/user.service";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import { useNavigate } from "react-router-dom";
 
 const UserTableRow = (props: { row: IUser }) => {
+  const navigate = useNavigate();
   const { row } = props;
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -85,17 +87,20 @@ const UserTableRow = (props: { row: IUser }) => {
             .deleteById(row._id)
             .then((res) => {
               alertify.success("User deleted successfully!");
-              return window.location.reload();
+              return navigate(0);
             })
             .catch((err) => {
               setLoading(false);
               if (err?.message) {
                 alertify.error(err.message);
+                if (err.message === "[REDsystem Error]: Not authorized, token failed") {
+                  return navigate("/signin");
+                }
               }
             });
         } else {
           alertify.error("Error, please reload the page!");
-          return window.location.reload();
+          return navigate(0);
         }
       }
     });
@@ -103,7 +108,7 @@ const UserTableRow = (props: { row: IUser }) => {
   const handleEditClick = () => {
     setLoading(true);
     if (row?._id) {
-      return (window.location.href = `/user/edit/${row._id}`);
+      return navigate(`/user/edit/${row._id}`);
     }
   };
   const handleRestoreClick = () => {
@@ -128,7 +133,7 @@ const UserTableRow = (props: { row: IUser }) => {
             .restore(row._id)
             .then((res) => {
               alertify.success("User restored successfully!");
-              return window.location.reload();
+              return navigate(0);
             })
             .catch((err) => {
               setLoading(false);
@@ -138,7 +143,7 @@ const UserTableRow = (props: { row: IUser }) => {
             });
         } else {
           alertify.error("Error, please reload the page!");
-          return window.location.reload();
+          return navigate(0);
         }
       }
     });

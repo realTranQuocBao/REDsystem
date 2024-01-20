@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import TheLayout from "./TheLayout";
 import { useEffect, useState } from "react";
 import authApi from "services/auth.service";
@@ -11,6 +11,7 @@ import Error404Page from "views/misc/pages/Error404Page";
 import Error500Page from "views/misc/pages/Error500Page";
 
 const ThePrivateRoute = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const [authenticated, setAuthenticated] = useState(false);
 
@@ -30,9 +31,12 @@ const ThePrivateRoute = () => {
         .catch((err) => {
           localStorage.removeItem("user");
           setAuthenticated(false);
+          if (err?.message === "[REDsystem Error]: Not authorized, token failed") {
+            navigate("/signin");
+          }
         });
     }
-  }, [location]);
+  }, [location, navigate]);
 
   console.log("authenticated", authenticated);
 

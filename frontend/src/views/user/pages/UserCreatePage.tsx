@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import useLoading from "hooks/useLoading.hook";
 import { useForm } from "react-hook-form";
-import { IUser, IUserFormValues } from "models/user.model";
+import { IUserFormValues } from "models/user.model";
 import userService from "services/user.service";
+import { useNavigate } from "react-router-dom";
 
 const UserCreatePage = () => {
+  const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -36,7 +38,7 @@ const UserCreatePage = () => {
             alertify.success((res as any).message);
           }
 
-          window.location.replace(`/user/edit/${(res as any)?.data.items._id}`);
+          navigate(`/user/edit/${(res as any)?.data.items._id}`);
         })
         .catch((err) => {
           setLoading(false);
@@ -54,7 +56,7 @@ const UserCreatePage = () => {
   //  {errors.name && <p>{errors.name.message}</p>}
 
   const backToList = () => {
-    window.location.replace("/user");
+    navigate("/user");
   };
 
   return (

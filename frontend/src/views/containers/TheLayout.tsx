@@ -1,11 +1,10 @@
 import React, { useEffect } from "react";
 import { TheTopBar, TheLeftBar, TheContent, TheFooter } from "./index";
-import { publicURL } from "setting";
 
 const TheLayout = () => {
   useEffect(() => {
     const script = document.createElement("script");
-    script.src = `${publicURL}/assets/js/app.js`;
+    script.src = `/assets/js/app.js`;
 
     script.async = true;
     script.onload = () => {

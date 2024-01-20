@@ -10,9 +10,12 @@ import React, { useEffect, useState } from "react";
 import { getTimeHMDMY } from "utils";
 import courseService from "services/course.service";
 import useLoading from "hooks/useLoading.hook";
+import { useNavigate } from "react-router-dom";
 
 const CouseTableRow = (props: { row: ICourse }) => {
+  const navigate = useNavigate();
   const { row } = props;
+
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [customInfoList, setCustomInfoList] = useState<
@@ -83,7 +86,7 @@ const CouseTableRow = (props: { row: ICourse }) => {
             .deleteById(row._id)
             .then((res) => {
               alertify.success("Course deleted successfully!");
-              return window.location.reload();
+              return navigate(0);
             })
             .catch((err) => {
               setLoading(false);
@@ -93,7 +96,7 @@ const CouseTableRow = (props: { row: ICourse }) => {
             });
         } else {
           alertify.error("Error, please reload the page!");
-          return window.location.reload();
+          return navigate(0);
         }
       }
     });
@@ -101,7 +104,7 @@ const CouseTableRow = (props: { row: ICourse }) => {
   const handleEditClick = () => {
     setLoading(true);
     if (row?._id) {
-      return (window.location.href = `/course/edit/${row._id}`);
+      return navigate(`/course/edit/${row._id}`);
     }
   };
   const handleRestoreClick = () => {
@@ -126,7 +129,7 @@ const CouseTableRow = (props: { row: ICourse }) => {
             .restore(row._id)
             .then((res) => {
               alertify.success("Course restored successfully!");
-              return window.location.reload();
+              return navigate(0);
             })
             .catch((err) => {
               setLoading(false);
@@ -136,7 +139,7 @@ const CouseTableRow = (props: { row: ICourse }) => {
             });
         } else {
           alertify.error("Error, please reload the page!");
-          return window.location.reload();
+          return navigate(0);
         }
       }
     });
