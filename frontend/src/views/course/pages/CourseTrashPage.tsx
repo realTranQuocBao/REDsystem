@@ -3,7 +3,6 @@ import { ICourse } from "models/course.model";
 import courseService from "services/course.service";
 import useLoading from "hooks/useLoading.hook";
 import CourseTable from "../components/CourseTable";
-import { Navigate } from "react-router-dom";
 
 const CourseTrashPage = () => {
   // const [counter, setCounter] = useState(0);

@@ -10,7 +10,6 @@ import React, { useEffect, useState } from "react";
 import { getTimeHMDMY } from "utils";
 import courseService from "services/course.service";
 import useLoading from "hooks/useLoading.hook";
-import { Navigate } from "react-router-dom";
 
 const CouseTableRow = (props: { row: ICourse }) => {
   const { row } = props;
