@@ -6,32 +6,23 @@ class CourseService {
     };
 
     getById = async (id: string) => {
-
         return await apiService.get(`/course/${id}`);
     };
 
-    post = async (data: (object | null)) => {
+    create = async (data: (object | null)) => {
         return await apiService.post("/course", data);
     };
 
-    put = async (data: (object | null)) => {
-        debugger;
-        return await apiService.put(`/course`, data);
+    update = async (id: string, data: (object | null)) => {
+        return await apiService.patch(`/course/${id}`, data);
     };
 
     deleteById = async (id: string) => {
         return await apiService.delete(`/course/${id}`);
     };
 
-    export = async () => {
-        return await apiService.get("/course/Export", { responseType: "arraybuffer" }).then((response) => {
-            //
-        });
-    };
-
-    registerEmployeeToClass = async (data: (object | null)) => {
-        debugger;
-        return await apiService.post("/course/RegisterEmployeeToClass", data);
+    restore = async (id: string) => {
+        return await apiService.patch(`/course/${id}/restore`);
     };
 }
 

@@ -94,7 +94,11 @@ const signIn: RequestHandler<unknown, unknown, ISignInBody, unknown> = async (re
         }
 
         const user = await UserModel.findOne({ email }).select("+password").exec();
-        if (!user) {
+        const userWithoutPw = await UserModel.findOne({ email })
+            .populate('createdBy', '_id name email')
+            .populate('updatedBy', '_id name email')
+            .exec();
+        if (!user || !userWithoutPw) {
             throw createHttpError(401, "Invalid credentials! Email or password is wrong, please try again!");
         }
 
@@ -107,7 +111,7 @@ const signIn: RequestHandler<unknown, unknown, ISignInBody, unknown> = async (re
         const token = generateAuthToken(user._id);
         res.status(200).json(apiResponseService.success(
             {
-                ...user.toObject(),
+                ...userWithoutPw.toObject(),
                 accessToken: token.accessToken,
                 refreshToken: token.refreshToken
             },

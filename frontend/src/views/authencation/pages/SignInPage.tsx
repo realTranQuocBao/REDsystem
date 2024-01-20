@@ -1,21 +1,24 @@
-import "assets/vendor/css/pages/page-auth.css";
-import logoImage from "assets/images/logo.png";
 import React, { useEffect, useState } from "react";
 import authApi from "services/auth.service";
 import { Navigate } from "react-router-dom";
+import { IApiResponse } from "models/apiResponse.model";
+import useLoading from "hooks/useLoading.hook";
 
 const SignInPage = () => {
-  document.querySelector("html")?.classList.add("customizer-hide");
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
+  const alertify = (window as any).alertify;
+
+  useLoading(loading);
 
   useEffect(() => {
     var user = JSON.parse(localStorage.getItem("user") || "{}");
     if (user?.accessToken) {
       setRedirect(true);
+    } else {
+      (window as any).alertify?.success("Not authorized, token failed. Please SignIn 💕");
     }
   }, []);
 
@@ -27,7 +30,7 @@ const SignInPage = () => {
   };
 
   const handleSubmit = (event: React.FormEvent) => {
-    //start loading
+    setLoading(true);
     const data = {
       email,
       password
@@ -35,14 +38,18 @@ const SignInPage = () => {
     authApi
       .signin(data)
       .then((res) => {
+        const resApi = res as IApiResponse;
+        if (resApi?.message) {
+          alertify.success(resApi?.message);
+        }
         localStorage.setItem("user", JSON.stringify(res.data.items));
-        //end loading
         setRedirect(true);
+        setLoading(false);
       })
       .catch((err) => {
-        //end loading
+        setLoading(false);
         if (err?.message) {
-          alert(err.message);
+          alertify.error(err.message);
         }
       });
 
@@ -50,98 +57,82 @@ const SignInPage = () => {
   };
 
   if (redirect) {
-    return <Navigate to="/" replace={true} />;
+    return <Navigate to="/course" replace={true} />;
   }
 
   return (
     <>
-      {/* Content */}
-      <div className="container-xxl">
-        <div className="authentication-wrapper authentication-basic container-p-y">
-          <div className="authentication-inner">
-            {/* SignIn Card */}
-            <div className="card">
-              <div className="card-body">
-                {/* Logo */}
-                <div className="app-brand justify-content-center">
-                  <a href="index.html" className="app-brand-link gap-2">
-                    <span className="app-brand-logo demo">
-                      <img src={logoImage} alt="Logo" className="logo" />
-                    </span>
-                    <span className="app-brand-text demo text-body fw-bold">tranquocbao</span>
-                  </a>
-                </div>
-                {/* /Logo */}
-                <h4 className="mb-2">Welcome to REDsystem! 👋</h4>
-                <p className="mb-4">Please sign-in to your account and start the adventure</p>
-
-                <form id="formAuthentication" className="mb-3" onSubmit={handleSubmit}>
-                  <div className="mb-3">
-                    <label htmlFor="email" className="form-label">
-                      Email
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="email"
-                      placeholder="Enter your email"
-                      value={email}
-                      onChange={onEmailChange}
-                      autoFocus
-                    />
-                  </div>
-                  <div className="mb-3 form-password-toggle">
-                    <div className="d-flex justify-content-between">
-                      <label className="form-label" htmlFor="password">
-                        Password
-                      </label>
-                      <a href="forgot-password">
-                        <small>Forgot Password?</small>
-                      </a>
-                    </div>
-                    <div className="input-group input-group-merge">
-                      <input
-                        type="password"
-                        id="password"
-                        className="form-control"
-                        value={password}
-                        onChange={onPasswordChange}
-                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                        aria-describedby="password"
-                      />
-                      <span className="input-group-text cursor-pointer">
-                        <i className="bx bx-hide"></i>
-                      </span>
-                    </div>
-                  </div>
-                  <div className="mb-3">
-                    <div className="form-check">
-                      <input className="form-check-input" type="checkbox" id="remember-me" />
-                      <label className="form-check-label" htmlFor="remember-me">
-                        Remember Me
-                      </label>
-                    </div>
-                  </div>
-                  <div className="mb-3">
-                    <button className="btn btn-primary d-grid w-100" type="submit">
-                      Sign in
-                    </button>
-                  </div>
-                </form>
-
-                <p className="text-center">
-                  <span>New on our platform?</span>
-                  <a href="signup">
-                    <span>Create an account</span>
-                  </a>
-                </p>
-              </div>
-            </div>
-            {/* /SignIn Card */}
+      <div className="card-body">
+        <div className="text-center m-b-15">
+          <div className="logo logo-admin">
+            <img src="/assets/images/logo-name.png" height="24" alt="logo" />
           </div>
         </div>
+
+        <div className="p-3">
+          <form className="form-horizontal m-t-20" onSubmit={handleSubmit}>
+            <div className="form-group row">
+              <div className="col-12">
+                <input
+                  className="form-control"
+                  type="text"
+                  value={email}
+                  onChange={onEmailChange}
+                  required={true}
+                  placeholder="Email"
+                />
+              </div>
+            </div>
+
+            <div className="form-group row">
+              <div className="col-12">
+                <input
+                  className="form-control"
+                  type="password"
+                  value={password}
+                  onChange={onPasswordChange}
+                  required={true}
+                  placeholder="Password"
+                />
+              </div>
+            </div>
+
+            <div className="form-group row">
+              <div className="col-12">
+                <div className="custom-control custom-checkbox">
+                  <input type="checkbox" className="custom-control-input" id="customCheck1" />
+                  <label className="custom-control-label" htmlFor="customCheck1">
+                    Remember me
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div className="form-group text-center row m-t-20">
+              <div className="col-12">
+                <button className="btn btn-danger btn-block waves-effect waves-light" type="submit">
+                  Log In
+                </button>
+              </div>
+            </div>
+
+            <div className="form-group m-t-10 mb-0 row">
+              <div className="col-sm-7 m-t-20">
+                <a href="pages-recoverpw.html" className="text-muted">
+                  <i className="mdi mdi-lock"></i>
+                  <small>Forgot your password ?</small>
+                </a>
+              </div>
+              <div className="col-sm-5 m-t-20">
+                <a href="pages-register.html" className="text-muted">
+                  <i className="mdi mdi-account-circle"></i>
+                  <small>Create an account ?</small>
+                </a>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
-      {/* / Content */}
     </>
   );
 };

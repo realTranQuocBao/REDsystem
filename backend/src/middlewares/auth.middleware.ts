@@ -14,8 +14,10 @@ const auth = async (req: Request, res: Response, next: NextFunction) => {
             return next(createHttpError(403, 'Not authorized, token failed'));
         }
 
+
         const jwtPayload = <any>jwt.verify(token, env.ACCESS_JWT_SECRET);
 
+        console.log("token", jwtPayload);
         const userId = (jwtPayload as IToken)._id || null;
 
         if (!mongoose.isValidObjectId(userId)) {

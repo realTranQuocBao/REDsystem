@@ -78,6 +78,11 @@ apiService.interceptors.response.use(
     return response;
   },
   function (error) {
+
+    if (error?.response?.data?.message === "[REDsystem Error]: Not authorized, token failed") {
+      window.location.replace('/signin');
+    }
+
     if (error?.response?.data) {
       return Promise.reject(error.response.data);
     }

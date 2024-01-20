@@ -1,5 +1,5 @@
 const CourseCard = () => {
-  return <>hihi</>;
+  return <>Feature not available yet!</>;
 };
 
 export default CourseCard;

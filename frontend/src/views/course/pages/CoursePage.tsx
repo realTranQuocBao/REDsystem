@@ -1,40 +1,44 @@
 import { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
 import { ICourse } from "models/course.model";
 import courseService from "services/course.service";
+import useLoading from "hooks/useLoading.hook";
+import CourseTable from "../components/CourseTable";
 
 const CoursePage = () => {
-  const [counter, setCounter] = useState(0);
+  // const [counter, setCounter] = useState(0);
   const [courses, setCourses] = useState<ICourse[]>([]);
-  // const [course, setCourse] = useState<ICourse | null>(null);
+  const [loading, setLoading] = useState(true);
   const [params, setParams] = useState({
-    search: "React",
-    filterby: "React",
-    filterquery: "React",
-    sort: "React",
-    order: "React",
-    PageIndex: 1,
-    PageSize: 10
+    search: "",
+    filterby: "",
+    filterquery: "",
+    sort: "",
+    order: ""
   });
 
-  useEffect(() => {
-    courseService.get(params).then((res) => {
-      // setCourses((state) => ({ name: state }));
+  const alertify = (window as any).alertify;
 
-      console.log("hihi", res.data.items);
-    });
-  }, [counter, params]);
+  useLoading(loading);
+
+  useEffect(() => {
+    setLoading(true);
+    courseService
+      .get(params)
+      .then((res) => {
+        setCourses(res.data.items);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+        if (err?.message) {
+          alertify.error(err.message);
+        }
+      });
+  }, [params]);
+
   return (
     <>
-      <h1>Queo cơm</h1>
-      <Button
-        onClick={() => {
-          setCounter((st) => st + 2);
-        }}
-      >
-        Clicked {counter} time(s)
-      </Button>
-      {courses}
+      <CourseTable courses={courses} />
     </>
   );
 };
