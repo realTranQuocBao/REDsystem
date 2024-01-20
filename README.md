@@ -96,5 +96,5 @@ $ npm run feapp
 
 ### 3. Functions:
 
-- Course management -> CRUD (primary user)
-- Course management -> CRUD (admin user)
+- Course management -> CRUD (all user)
+- User management -> CRUD (admin user)
