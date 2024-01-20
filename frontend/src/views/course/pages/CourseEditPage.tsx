@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { ICourse, ICourseFormValues } from "models/course.model";
 import courseService from "services/course.service";
 import useLoading from "hooks/useLoading.hook";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { getTimeHMDMY } from "utils";
 
 const CourseEditPage = () => {
+  const navigate = useNavigate();
   const [course, setCourse] = useState<ICourse | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -73,7 +74,7 @@ const CourseEditPage = () => {
   //  {errors.name && <p>{errors.name.message}</p>}
 
   const backToList = () => {
-    window.location.replace("/course");
+    navigate("/course");
   };
 
   return (

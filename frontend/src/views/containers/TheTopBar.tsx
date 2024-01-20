@@ -1,6 +1,8 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const TheTopBar = () => {
+  const navigate = useNavigate();
   const swal = (window as any).swal;
   const alertify = (window as any).alertify;
 
@@ -23,7 +25,7 @@ const TheTopBar = () => {
       if (event.value === true) {
         alertify.success("Signing out of your account...");
         localStorage.removeItem("user");
-        return (window.location.href = "/signin");
+        return navigate("/signin");
       }
     });
   };
@@ -37,7 +39,7 @@ const TheTopBar = () => {
               <a
                 className="nav-link dropdown-toggle arrow-none waves-effect text-white"
                 data-toggle="dropdown"
-                href="#"
+                href="#/quocbao"
                 role="button"
                 aria-haspopup="false"
                 aria-expanded="false"
@@ -46,19 +48,19 @@ const TheTopBar = () => {
                 <img src="/assets/images/flags/us_flag.jpg" className="ml-2" height="16" alt="" />
               </a>
               <div className="dropdown-menu dropdown-menu-right language-switch">
-                <a className="dropdown-item" href="#">
+                <a className="dropdown-item" href="#/quocbao">
                   <img src="/assets/images/flags/italy_flag.jpg" alt="" height="16" />
                   <span> Italian </span>
                 </a>
-                <a className="dropdown-item" href="#">
+                <a className="dropdown-item" href="#/quocbao">
                   <img src="/assets/images/flags/french_flag.jpg" alt="" height="16" />
                   <span> French </span>
                 </a>
-                <a className="dropdown-item" href="#">
+                <a className="dropdown-item" href="#/quocbao">
                   <img src="/assets/images/flags/spain_flag.jpg" alt="" height="16" />
                   <span> Spanish </span>
                 </a>
-                <a className="dropdown-item" href="#">
+                <a className="dropdown-item" href="#/quocbao">
                   <img src="/assets/images/flags/russia_flag.jpg" alt="" height="16" />
                   <span> Russian </span>
                 </a>
@@ -233,7 +235,7 @@ const TheTopBar = () => {
             <li className="hide-phone app-search">
               <form role="search" className="">
                 <input type="text" placeholder="Search..." className="form-control" />
-                <a href="">
+                <a href="#/quocbao">
                   <i className="fa fa-search"></i>
                 </a>
               </form>

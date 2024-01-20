@@ -1,16 +1,7 @@
-import { IUser } from "models/user.model";
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { Navigate } from "react-router-dom";
 
 const TheLeftBar = () => {
-  const [user, setUser] = useState<IUser | null>(null);
-
-  useEffect(() => {
-    const userLocal = JSON.parse(localStorage.getItem("user") || "{}");
-    if (useState?.name) {
-      setUser(userLocal);
-    }
-  }, []);
-
   const swal = (window as any).swal;
   const alertify = (window as any).alertify;
 
@@ -33,7 +24,7 @@ const TheLeftBar = () => {
       if (event.value === true) {
         alertify.success("Signing out of your account...");
         localStorage.removeItem("user");
-        return (window.location.href = "/signin");
+        return <Navigate to="/signin" replace />;
       }
     });
   };
@@ -59,7 +50,7 @@ const TheLeftBar = () => {
         </div>
         <div className="sidebar-user">
           <img src="/assets/images/users/avatar-6.jpg" alt="user" className="rounded-circle img-thumbnail mb-1" />
-          <h6 className="">{user?.name || "Unknow :("}</h6>
+          <h6 className="">{JSON.parse(localStorage.getItem("user") || "{}")?.name || "Unknow :("}</h6>
           <p className="online-icon text-dark">
             <i className="mdi mdi-record text-success"></i>online
           </p>
@@ -133,31 +124,34 @@ const TheLeftBar = () => {
                 </ul>
               </li>
 
-              <li className="has_sub">
-                <a href="#/quocbao" onClick={(e) => e.preventDefault()} className="waves-effect">
-                  <i className="fas fa-user-friends"></i> <span> User Manage </span>
-                  <span className="float-right">
-                    <i className="mdi mdi-chevron-right"></i>
-                  </span>
-                </a>
-                <ul className="list-unstyled">
-                  <li>
-                    <a href="/user">
-                      <i className="fas fa-table"></i> Get list
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/user/create">
-                      <i className="ion-android-add"></i> Create
-                    </a>
-                  </li>
-                  <li>
-                    <a href="/user/trash">
-                      <i className="ion-android-trash"></i> Trash Bin
-                    </a>
-                  </li>
-                </ul>
-              </li>
+              <li className="menu-title">ADMIN AREA</li>
+              {JSON.parse(localStorage.getItem("user") || "{}")?.isAdmin && (
+                <li className="has_sub">
+                  <a href="#/quocbao" onClick={(e) => e.preventDefault()} className="waves-effect">
+                    <i className="fas fa-user-friends"></i> <span> User Manage </span>
+                    <span className="float-right">
+                      <i className="mdi mdi-chevron-right"></i>
+                    </span>
+                  </a>
+                  <ul className="list-unstyled">
+                    <li>
+                      <a href="/user">
+                        <i className="fas fa-table"></i> Get list
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/user/create">
+                        <i className="ion-android-add"></i> Create
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/user/trash">
+                        <i className="ion-android-trash"></i> Trash Bin
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+              )}
             </ul>
           </div>
           <div className="clearfix"></div>

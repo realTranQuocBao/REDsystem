@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import useLoading from "hooks/useLoading.hook";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { getTimeHMDMY } from "utils";
 import { IUser, IUserFormValues } from "models/user.model";
 import userService from "services/user.service";
 
 const UserEditPage = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState<IUser | null>(null);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -78,7 +79,7 @@ const UserEditPage = () => {
   //  {errors.name && <p>{errors.name.message}</p>}
 
   const backToList = () => {
-    window.location.replace("/user");
+    navigate("/user");
   };
 
   return (
