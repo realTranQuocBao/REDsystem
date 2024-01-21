@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, InternalAxiosRequestConfig } from "axios";
-import { baseURL } from "../setting";
+import { baseApiEnpoint, publicURL } from "../setting";
 
 // var option = {
 //   baseURL: baseURL,
@@ -34,7 +34,7 @@ const apiService = axios.create();
 apiService.interceptors.request.use(
   (config: AxiosRequestConfig) => {
 
-    config.baseURL = baseURL;
+    config.baseURL = baseApiEnpoint;
     config.headers = {
       "Content-Type": "application/json"
     };
@@ -78,6 +78,10 @@ apiService.interceptors.response.use(
     return response;
   },
   function (error) {
+
+    if (error?.response?.data?.message === "[REDsystem Error]: Not authorized, token failed") {
+      window.location.replace(`${publicURL}/signin`);
+    }
 
     if (error?.response?.data) {
       return Promise.reject(error.response.data);

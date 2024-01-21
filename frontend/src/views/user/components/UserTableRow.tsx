@@ -91,12 +91,6 @@ const UserTableRow = (props: { row: IUser }) => {
             })
             .catch((err) => {
               setLoading(false);
-              if (err?.message) {
-                alertify.error(err.message);
-                if (err.message === "[REDsystem Error]: Not authorized, token failed") {
-                  return navigate("/signin");
-                }
-              }
             });
         } else {
           alertify.error("Error, please reload the page!");

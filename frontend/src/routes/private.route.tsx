@@ -11,7 +11,7 @@ const UserEditPage = React.lazy(() => import("views/user/pages/UserEditPage"));
 
 const Demone = () => <div>hihi</div>;
 
-const routes = [
+const privateRoute = [
   {
     name: "Get list Courses",
     path: "/course",
@@ -66,4 +66,4 @@ const routes = [
   }
 ];
 
-export default routes;
+export default privateRoute;
