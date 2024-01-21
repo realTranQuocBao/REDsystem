@@ -57,7 +57,7 @@ const SignInPage = () => {
   };
 
   if (redirect) {
-    return <Navigate to="/course" replace={true} />;
+    return <Navigate to="/" replace={true} />;
   }
 
   return (
@@ -118,15 +118,15 @@ const SignInPage = () => {
 
             <div className="form-group m-t-10 mb-0 row">
               <div className="col-sm-7 m-t-20">
-                <a href="pages-recoverpw.html" className="text-muted">
+                <a href="/forgotpass" className="text-muted">
                   <i className="mdi mdi-lock"></i>
-                  <small>Forgot your password ?</small>
+                  <small className="ml-1">Forgot your password ?</small>
                 </a>
               </div>
               <div className="col-sm-5 m-t-20">
-                <a href="pages-register.html" className="text-muted">
+                <a href="/signup" className="text-muted">
                   <i className="mdi mdi-account-circle"></i>
-                  <small>Create an account ?</small>
+                  <small className="ml-1">Create an account ?</small>
                 </a>
               </div>
             </div>

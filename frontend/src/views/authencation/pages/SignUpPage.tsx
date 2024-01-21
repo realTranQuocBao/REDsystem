@@ -1,12 +1,24 @@
 import useLoading from "hooks/useLoading.hook";
 import { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
 
 const SignUpPage = () => {
+  const [redirect, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
+
   useLoading(loading);
+
   useEffect(() => {
-    setLoading(false);
+    var user = JSON.parse(localStorage.getItem("user") || "{}");
+    if (user?.accessToken) {
+      setLoading(true);
+      setRedirect(true);
+    }
   }, []);
+
+  if (redirect) {
+    return <Navigate to="/" replace={true} />;
+  }
 
   return (
     <>
@@ -61,7 +73,7 @@ const SignUpPage = () => {
 
             <div className="form-group m-t-10 mb-0 row">
               <div className="col-12 m-t-20 text-center">
-                <a href="pages-login.html" className="text-muted">
+                <a href="/signin" className="text-muted">
                   Already have account?
                 </a>
               </div>

@@ -2,13 +2,6 @@ import apiService from "./_base.service";
 
 class AuthService {
 
-    // AuthRoute.post("/info", auth, AuthController.getAuthenInfor);
-    // AuthRoute.post("/signup", AuthController.signUp);
-    // AuthRoute.post("/signin", AuthController.signIn);
-    // AuthRoute.post("/signout", AuthController.signOut);
-    // AuthRoute.post("/forgotpass", AuthController.forgotPassword);
-    // AuthRoute.post("/resetpass/", AuthController.resetPassword);
-
     signin = async (data: (object | null)) => {
         return await apiService.post("/auth/signin", data);
     };

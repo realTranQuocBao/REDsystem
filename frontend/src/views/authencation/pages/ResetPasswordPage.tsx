@@ -1,13 +1,25 @@
 // import "assets/vendor/css/pages/page-auth.css";
 import useLoading from "hooks/useLoading.hook";
 import { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
 
 const ResetPasswordPage = () => {
+  const [redirect, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
+
   useLoading(loading);
+
   useEffect(() => {
-    setLoading(false);
+    var user = JSON.parse(localStorage.getItem("user") || "{}");
+    if (user?.accessToken) {
+      setLoading(true);
+      setRedirect(true);
+    }
   }, []);
+
+  if (redirect) {
+    return <Navigate to="/" replace={true} />;
+  }
   return (
     <>
       <div className="card-body">

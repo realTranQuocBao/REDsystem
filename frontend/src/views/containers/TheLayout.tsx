@@ -1,7 +1,37 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { TheTopBar, TheLeftBar, TheContent, TheFooter } from "./index";
+import { useLocation, useNavigate } from "react-router-dom";
+import authService from "services/auth.service";
 
 const TheLayout = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [authenticated, setAuthenticated] = useState(false);
+
+  useEffect(() => {
+    // runs checkUser() on location change (i.e. route)
+    // checkUser();
+
+    //start loading
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    if (user?.accessToken) {
+      authService
+        .info()
+        .then((res) => {
+          setAuthenticated(true);
+        })
+        .catch((err) => {
+          localStorage.removeItem("user");
+          setAuthenticated(false);
+          if (err?.message === "[REDsystem Error]: Not authorized, token failed") {
+            navigate("/signin");
+          }
+        });
+    }
+  }, [location, navigate]);
+
+  console.log("authenticated", authenticated);
+
   useEffect(() => {
     const script = document.createElement("script");
     script.src = `/assets/js/app.js`;

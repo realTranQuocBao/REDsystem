@@ -1,12 +1,24 @@
 import useLoading from "hooks/useLoading.hook";
 import { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
 
 const ForgotPasswordPage = () => {
+  const [redirect, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
+
   useLoading(loading);
+
   useEffect(() => {
-    setLoading(false);
+    var user = JSON.parse(localStorage.getItem("user") || "{}");
+    if (user?.accessToken) {
+      setLoading(true);
+      setRedirect(true);
+    }
   }, []);
+
+  if (redirect) {
+    return <Navigate to="/" replace={true} />;
+  }
 
   return (
     <>
@@ -37,6 +49,15 @@ const ForgotPasswordPage = () => {
                 <button className="btn btn-danger btn-block waves-effect waves-light" type="submit">
                   Send Email
                 </button>
+              </div>
+            </div>
+
+            <div className="form-group m-t-10 mb-0 row">
+              <div className="col-12 m-t-20 text-center">
+                <a href="/signin" className="text-muted">
+                  <i className="mdi mdi-lastpass"></i>
+                  <small className="ml-1">Sign In with password</small>
+                </a>
               </div>
             </div>
           </form>
