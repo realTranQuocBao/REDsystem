@@ -1,6 +1,8 @@
+- **API DOCUMENTATION** _(POSTMAN)_: [https://documenter.getpostman.com/view/14635131/2s9YsQ8qJP](https://documenter.getpostman.com/view/14635131/2s9YsQ8qJP)
+
 # PROJECT CONFIGURATION GUIDE
 
-## BACKEND NODEJS:
+## A. BACKEND NODEJS:
 
 ### 1. Create `.env` file in the backend directory:
 
@@ -75,13 +77,13 @@ POST http://localhost:5000/api/v1/import/course
 | PATCH  | `/api/v1/user/:id/restore`   | Update (Restore data soft-deleted)                                                                                                                                                                                                                                                                                                   |
 | DELETE | `/api/v1/user/:id`           | Soft delete (run once) / Delete permanently (run twice)                                                                                                                                                                                                                                                                              |
 
-## FRONTEND REACTJS:
+## B. FRONTEND REACTJS:
 
 ### 1. Create `.env` file in the backend directory:
 
 ```
-REACT_APP_API_ENDPOINT=http://127.0.0.1:5000/api/v1
-REACT_APP_PUBLIC_URL=http://127.0.0.1:3000
+REACT_APP_API_ENDPOINT=http://localhost:5000/api/v1
+REACT_APP_PUBLIC_URL=http://localhost:3000
 ```
 
 > For security reasons, XXXXXXXXXXXXXXXX will be sent via email.

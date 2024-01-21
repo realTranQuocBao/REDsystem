@@ -1,6 +1,13 @@
-import "assets/vendor/css/pages/page-auth.css";
+// import "assets/vendor/css/pages/page-auth.css";
+import useLoading from "hooks/useLoading.hook";
+import { useEffect, useState } from "react";
 
 const ResetPasswordPage = () => {
+  const [loading, setLoading] = useState(false);
+  useLoading(loading);
+  useEffect(() => {
+    setLoading(false);
+  }, []);
   return (
     <>
       <div className="card-body">

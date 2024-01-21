@@ -1,4 +1,12 @@
+import useLoading from "hooks/useLoading.hook";
+import { useEffect, useState } from "react";
+
 const Error404Page = () => {
+  const [loading, setLoading] = useState(false);
+  useLoading(loading);
+  useEffect(() => {
+    setLoading(false);
+  }, []);
   return (
     <>
       <div className="card-block">
