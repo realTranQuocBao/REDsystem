@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import authApi from "services/auth.service";
+import authService from "services/auth.service";
 import { Navigate } from "react-router-dom";
 import { IApiResponse } from "models/apiResponse.model";
 import useLoading from "hooks/useLoading.hook";
@@ -35,7 +35,7 @@ const SignInPage = () => {
       email,
       password
     };
-    authApi
+    authService
       .signin(data)
       .then((res) => {
         const resApi = res as IApiResponse;
@@ -75,7 +75,7 @@ const SignInPage = () => {
               <div className="col-12">
                 <input
                   className="form-control"
-                  type="text"
+                  type="email"
                   value={email}
                   onChange={onEmailChange}
                   required={true}

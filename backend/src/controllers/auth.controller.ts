@@ -165,7 +165,7 @@ const forgotPassword: RequestHandler<unknown, unknown, IForgotPasswordBody, unkn
 
                 if (timeRemain > 0) {
                     const timeRemain = env.MIN_TIME_TO_CREATE_KEY - timeDifference;
-                    throw createHttpError(401, `Try again in ${Math.ceil(timeRemain / 1000)} second(s)!`);
+                    throw createHttpError(429, `Please check your Spam or Spam folder for the recover email or Try again in ${Math.ceil(timeRemain / 1000)} second(s)!`);
                 }
                 else {
                     await ResetPasswordModel.deleteMany({ email });
@@ -230,7 +230,7 @@ const resetPassword: RequestHandler<unknown, unknown, IResetPasswordBody, unknow
         res.status(200).json(apiResponseService.success(
             user,
             200,
-            "New password updated successfully!!"
+            "New password updated successfully!"
         ));
     } catch (error) {
         next(error);

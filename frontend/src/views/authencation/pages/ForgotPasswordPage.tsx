@@ -1,10 +1,15 @@
 import useLoading from "hooks/useLoading.hook";
+import { IApiResponse } from "models/apiResponse.model";
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
+import authService from "services/auth.service";
+import { publicURL } from "setting";
 
 const ForgotPasswordPage = () => {
   const [redirect, setRedirect] = useState(false);
+  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const alertify = (window as any).alertify;
 
   useLoading(loading);
 
@@ -15,6 +20,44 @@ const ForgotPasswordPage = () => {
       setRedirect(true);
     }
   }, []);
+
+  const onEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  };
+
+  const handleSubmit = (event: React.FormEvent) => {
+    setLoading(true);
+    const data = {
+      email
+    };
+    authService
+      .forgotPassword(data)
+      .then((res) => {
+        const resApi = res as IApiResponse;
+        if (resApi?.message) {
+          //test
+          const key = resApi.message.replace(
+            "Recovery key has been sent to your email! Link reset: <host>/api/v1/auth/resetpass/",
+            ""
+          );
+          setEmail(`${publicURL}/resetpass/${key}`);
+          alertify.success(resApi.message.replace(` Link reset: <host>/api/v1/auth/resetpass/${key}`, ""));
+
+          // alertify.success(resApi.message);
+        }
+        // setEmail("");
+      })
+      .catch((err) => {
+        if (err?.message) {
+          alertify.error(err.message);
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+
+    event.preventDefault();
+  };
 
   if (redirect) {
     return <Navigate to="/" replace={true} />;
@@ -30,7 +73,7 @@ const ForgotPasswordPage = () => {
         </div>
 
         <div className="p-3">
-          <form className="form-horizontal" action="index.html">
+          <form className="form-horizontal" onSubmit={handleSubmit}>
             <div className="alert alert-success alert-dismissible">
               <button type="button" className="close" data-dismiss="alert" aria-hidden="true">
                 ×
@@ -40,7 +83,14 @@ const ForgotPasswordPage = () => {
 
             <div className="form-group row">
               <div className="col-12">
-                <input className="form-control" type="email" required={true} placeholder="Email" />
+                <input
+                  className="form-control"
+                  type="email"
+                  value={email}
+                  onChange={onEmailChange}
+                  required={true}
+                  placeholder="email@example.co"
+                />
               </div>
             </div>
 
