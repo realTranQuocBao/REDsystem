@@ -41,7 +41,6 @@ const UserEditPage = () => {
           }
         });
   };
-  console.log("uuuuu", user);
 
   useEffect(() => {
     if (idUser) {
