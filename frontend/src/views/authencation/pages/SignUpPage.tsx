@@ -1,4 +1,13 @@
+import useLoading from "hooks/useLoading.hook";
+import { useEffect, useState } from "react";
+
 const SignUpPage = () => {
+  const [loading, setLoading] = useState(false);
+  useLoading(loading);
+  useEffect(() => {
+    setLoading(false);
+  }, []);
+
   return (
     <>
       <div className="card-body">

@@ -1,14 +1,14 @@
 import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import TheLayout from "./TheLayout";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import authApi from "services/auth.service";
 import { routes } from "routes";
 import TheLayoutBlank from "./TheLayoutBlank";
-import ForgotPasswordPage from "views/authencation/pages/ForgotPasswordPage";
-import SignInPage from "views/authencation/pages/SignInPage";
-import SignUpPage from "views/authencation/pages/SignUpPage";
-import Error404Page from "views/misc/pages/Error404Page";
-import Error500Page from "views/misc/pages/Error500Page";
+const ForgotPasswordPage = React.lazy(() => import("views/authencation/pages/ForgotPasswordPage"));
+const SignInPage = React.lazy(() => import("views/authencation/pages/SignInPage"));
+const SignUpPage = React.lazy(() => import("views/authencation/pages/SignUpPage"));
+const Error404Page = React.lazy(() => import("views/misc/pages/Error404Page"));
+const Error500Page = React.lazy(() => import("views/misc/pages/Error500Page"));
 
 const ThePrivateRoute = () => {
   const navigate = useNavigate();
@@ -21,7 +21,6 @@ const ThePrivateRoute = () => {
 
     //start loading
     const user = JSON.parse(localStorage.getItem("user") || "{}");
-
     if (user?.accessToken) {
       authApi
         .info()
@@ -45,10 +44,10 @@ const ThePrivateRoute = () => {
       <Routes>
         {/* PUBLIC-ROUTE */}
         <Route path="/" element={<TheLayoutBlank />}>
-          <Route path="forgotpass" element={<ForgotPasswordPage />} />
-          <Route path="resetpass" element={<ForgotPasswordPage />} />
-          <Route path="signin" element={<SignInPage />} />
-          <Route path="signup" element={<SignUpPage />} />
+          <Route path="forgotpass" Component={ForgotPasswordPage} />
+          <Route path="resetpass" Component={ForgotPasswordPage} />
+          <Route path="signin" Component={SignInPage} />
+          <Route path="signup" Component={SignUpPage} />
           <Route path="404-error" Component={Error404Page} />
           <Route path="500-error" Component={Error500Page} />
           {/* Can add landing page introduce project at path="" */}

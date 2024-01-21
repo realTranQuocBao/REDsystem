@@ -1,8 +1,4 @@
-## Something:
-
 - **API DOCUMENTATION** _(POSTMAN)_: [https://documenter.getpostman.com/view/14635131/2s9YsQ8qJP](https://documenter.getpostman.com/view/14635131/2s9YsQ8qJP)
-- **DEMO BE**: [https://redsystem-backend.vercel.app](https://redsystem-backend.vercel.app)
-- **DEMO FE**: [https://redsystem-frontend.vercel.app](https://redsystem-frontend.vercel.app)
 
 # PROJECT CONFIGURATION GUIDE
 
