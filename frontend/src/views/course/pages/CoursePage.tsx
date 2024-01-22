@@ -62,6 +62,7 @@ const CoursePage = () => {
           alertify.error(err.message);
         }
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params]);
 
   const onSearchClick = () => {
