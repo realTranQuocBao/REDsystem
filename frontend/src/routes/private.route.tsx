@@ -13,54 +13,64 @@ const Demone = () => <div>hihi</div>;
 
 const privateRoute = [
   {
-    name: "Get list Courses",
+    breadcrumb: "Course",
+    title: "Get list Courses",
     path: "/course",
     component: CoursePage
   },
   {
-    name: "Add new Course",
+    breadcrumb: "Create",
+    title: "Add new Course",
     path: "/course/create",
     component: CourseCreatePage
   },
   {
-    name: "Edit Course",
-    path: "/course/edit/:idCourse",
+    breadcrumb: "Edit",
+    title: "Edit Course",
+    path: "/course/edit/:idParam",
     component: CourseEditPage
   },
   {
-    name: "Get Courses in Trash",
+    breadcrumb: "Trash",
+    title: "Get Courses in Trash",
     path: "/course/trash",
     component: CourseTrashPage
   },
   {
-    name: "Get list Users",
+    breadcrumb: "User",
+    title: "Get list Users",
     path: "/user",
     component: UserPage
   },
   {
-    name: "Add new User",
+    breadcrumb: "Create",
+    title: "Add new User",
     path: "/user/create",
     component: UserCreatePage
   },
   {
-    name: "Edit User",
-    path: "/user/edit/:idUser",
+    breadcrumb: "Edit",
+    title: "Edit User",
+    path: "/user/edit/:idParam",
     component: UserEditPage
   },
   {
-    name: "Get Users in Trash",
+    breadcrumb: "Trash",
+    title: "Get Users in Trash",
     path: "/user/trash",
     component: UserTrashPage
   },
 
   //TEST
   {
-    name: "Test Data Table",
+    breadcrumb: "DEMO",
+    title: "Test Data Table",
     path: "demo",
     component: Demone
   },
   {
-    name: "Demo page",
+    breadcrumb: "DEMO",
+    title: "Demo page",
     path: "test",
     component: TestPage
   }

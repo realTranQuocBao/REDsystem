@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import ThePrivateRoute from "views/containers/ThePrivateRoute";
+import ThePrivateRoute from "containers/ThePrivateRoute";
 
 function App() {
   const loading = (

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { TheTopBar, TheLeftBar, TheContent, TheFooter } from "./index";
 import { useLocation, useNavigate } from "react-router-dom";
 import authService from "services/auth.service";
+import TheBreadcrumb from "./TheBreadcrumb";
 
 const TheLayout = () => {
   const navigate = useNavigate();
@@ -75,27 +76,8 @@ const TheLayout = () => {
             <div className="page-content-wrapper">
               {/* container-start: page-title&breadcrumb&content */}
               <div className="container-fluid">
-                {/* start page-title & start breadcrumb */}
-                <div className="row">
-                  <div className="col-sm-12">
-                    <div className="page-title-box">
-                      <div className="btn-group float-right">
-                        <ol className="breadcrumb hide-phone p-0 m-0">
-                          <li className="breadcrumb-item">
-                            <a href="/#quocbao">Zoogler</a>
-                          </li>
-                          <li className="breadcrumb-item">
-                            <a href="/#quocbao">Pages</a>
-                          </li>
-                          <li className="breadcrumb-item active">Starter</li>
-                        </ol>
-                      </div>
-                      <h4 className="page-title">Starter</h4>
-                    </div>
-                  </div>
-                </div>
-                {/* end page-title & end breadcrumb */}
-
+                {/*=====page-title & start breadcrumb HERE=====*/}
+                <TheBreadcrumb />
                 {/*=====CONTENT HERE=====*/}
                 <TheContent />
               </div>
