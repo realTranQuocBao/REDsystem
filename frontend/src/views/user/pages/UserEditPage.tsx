@@ -13,7 +13,7 @@ const UserEditPage = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
 
-  const { idUser } = useParams();
+  const { idParam } = useParams();
   const {
     register,
     handleSubmit,
@@ -25,9 +25,9 @@ const UserEditPage = () => {
 
   const loadData = () => {
     setLoading(true);
-    if (idUser)
+    if (idParam)
       userService
-        .getById(idUser)
+        .getById(idParam)
         .then((res) => {
           setUser(res.data.items);
           setIsAdmin(res.data.items.isAdmin);
@@ -43,18 +43,18 @@ const UserEditPage = () => {
   };
 
   useEffect(() => {
-    if (idUser) {
-      console.log(idUser);
+    if (idParam) {
+      console.log(idParam);
       loadData();
     }
-  }, [idUser]);
+  }, [idParam]);
 
   const onSubmit = (data: IUser) => {
-    if (idUser) {
+    if (idParam) {
       setLoading(true);
       console.log("Check", "start:loading");
       userService
-        .update(idUser, data)
+        .update(idParam, data)
         .then((res) => {
           setLoading(false);
           console.log("Check", "stop:loading");

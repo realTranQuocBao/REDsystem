@@ -26,7 +26,6 @@ const ThePrivateRoute = () => {
           <Route path="" element={<Navigate to="/course" replace />} />
         </Route>
         {/* /PUBLIC-ROUTE */}
-
         {/* PRIVATE-ROUTE */}
         <Route path="/" element={<TheLayout />}>
           {privateRoute.map((route, index) => {

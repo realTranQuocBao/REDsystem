@@ -11,7 +11,7 @@ const CourseEditPage = () => {
   const [course, setCourse] = useState<ICourse | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const { idCourse } = useParams();
+  const { idParam } = useParams();
   const {
     register,
     handleSubmit,
@@ -23,9 +23,9 @@ const CourseEditPage = () => {
 
   const loadData = () => {
     setLoading(true);
-    if (idCourse)
+    if (idParam)
       courseService
-        .getById(idCourse)
+        .getById(idParam)
         .then((res) => {
           setCourse(res.data.items);
           setLoading(false);
@@ -39,18 +39,19 @@ const CourseEditPage = () => {
   };
 
   useEffect(() => {
-    if (idCourse) {
-      console.log(idCourse);
+    if (idParam) {
+      console.log(idParam);
       loadData();
     }
-  }, [idCourse]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idParam]);
 
   const onSubmit = (data: ICourse) => {
-    if (idCourse) {
+    if (idParam) {
       setLoading(true);
       console.log("Check", "start:loading");
       courseService
-        .update(idCourse, data)
+        .update(idParam, data)
         .then((res) => {
           setLoading(false);
           console.log("Check", "stop:loading");
