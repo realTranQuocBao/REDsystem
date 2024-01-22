@@ -1,7 +1,8 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const TheLeftBar = () => {
+  const navigate = useNavigate();
   const swal = (window as any).swal;
   const alertify = (window as any).alertify;
 
@@ -24,7 +25,7 @@ const TheLeftBar = () => {
       if (event.value === true) {
         alertify.success("Signing out of your account...");
         localStorage.removeItem("user");
-        return <Navigate to="/signin" replace />;
+        return navigate("/signin");
       }
     });
   };
