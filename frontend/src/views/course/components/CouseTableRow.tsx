@@ -161,7 +161,7 @@ const CouseTableRow = (props: { row: ICourse }) => {
         <TableCell>{row.instructor}</TableCell>
         <TableCell>{row.language}</TableCell>
         <TableCell align="right">{row.price}</TableCell>
-        <TableCell align="right">{row.duration}</TableCell>
+        <TableCell align="center">{row.duration}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={12}>

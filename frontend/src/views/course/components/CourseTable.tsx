@@ -52,7 +52,7 @@ const CourseTable = (props: { courses: ICourse[] }) => {
               <TableCell>Instructor</TableCell>
               <TableCell>Language</TableCell>
               <TableCell align="right">Price&nbsp;($)</TableCell>
-              <TableCell align="right">Duration&nbsp;(H)</TableCell>
+              <TableCell align="center">Duration&nbsp;(H)</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
