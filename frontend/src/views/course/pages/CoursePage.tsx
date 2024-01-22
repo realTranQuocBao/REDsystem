@@ -14,6 +14,7 @@ const CoursePage = () => {
   const [filterQuery, setFilterQuery] = useState("");
   const [searchValue, setSearchValue] = useState("");
   const [search, setSearch] = useState("");
+  const [showControlPanel, setShowControlPanel] = useState(false);
   const [params, setParams] = useState<{
     search?: string;
     filterby?: string;
@@ -38,7 +39,7 @@ const CoursePage = () => {
       order: order,
       search: search,
       filterby: filterBy,
-      filterquery: filterQuery
+      filterquery: filterQuery.replace(`${filterBy}>>`, "")
     };
 
     const cleanedParams = Object.fromEntries(Object.entries(newParams).filter(([k, v]) => v));
@@ -75,424 +76,176 @@ const CoursePage = () => {
 
   return (
     <>
-      {/* SORT CONTROL - START */}
+      <button
+        className="btn btn-outline-success btn-sm mb-3 mt-0 mt-auto mr-auto"
+        style={{ width: "100%" }}
+        type="button"
+        data-toggle="collapse"
+        data-target="#dataFilterControl"
+        onClick={() => {
+          setShowControlPanel(!showControlPanel);
+        }}
+      >
+        <i className={`fas fa-chevron-${showControlPanel ? "up" : "down"}`}></i>
+        {showControlPanel ? " Hide" : " Show"} Control Panel&nbsp;
+        <i className={`fas fa-chevron-${showControlPanel ? "up" : "down"}`}></i>
+      </button>
 
-      <div className="card mb-1">
-        <div className="card-body pt-2 pb-2">
-          <div className="form-group row mb-0">
-            <label className="col-sm-2 col-form-label">Sort type</label>
-            <div
-              className="col-md-9 d-flex flex-wrap align-content-around"
-              style={{ paddingTop: "calc(.375rem + 1px)", paddingBottom: "calc(.375rem + 1px)" }}
-            >
-              <div className="custom-control custom-radio mr-3 mb-1">
-                <input
-                  id="orderAscending"
-                  className="custom-control-input"
-                  type="radio"
-                  value="asc"
-                  checked={order === "asc"}
-                  onChange={() => setOrder("asc")}
-                  name="order"
-                />
-                <label className="custom-control-label" htmlFor="orderAscending">
-                  Ascending
-                </label>
-              </div>
-              <div className="custom-control custom-radio mr-3 mb-1">
-                <input
-                  id="orderDescending"
-                  className="custom-control-input"
-                  type="radio"
-                  value="desc"
-                  checked={order === "desc"}
-                  onChange={() => setOrder("desc")}
-                  name="order"
-                />
-                <label className="custom-control-label" htmlFor="orderDescending" style={{ maxWidth: "200px" }}>
-                  Descending
-                </label>
+      <div className="collapse" id="dataFilterControl">
+        {/* SORT CONTROL - START */}
+        <div className="card mb-1">
+          <div className="card-body pt-2 pb-2">
+            <div className="form-group row mb-0">
+              <label className="col-sm-2 col-form-label">Sort by</label>
+              <div
+                className="col-sm-10 d-flex flex-wrap align-content-around"
+                style={{ paddingTop: "calc(.375rem + 1px)", paddingBottom: "calc(.375rem + 1px)" }}
+              >
+                <select
+                  className="custom-select col-sm-12"
+                  name="sort"
+                  value={sort}
+                  onChange={(e) => setSort(e.target.value)}
+                >
+                  <option value="name">name</option>
+                  <option value="updatedat">updatedAt (dafault)</option>
+                  <option value="createdat">createdAt</option>
+                  <option value="price">price</option>
+                  <option value="duration">duration</option>
+                  <option value="language">language</option>
+                  <option value="instructor">instructor</option>
+                  <option value="level">level</option>
+                  <option value="category">category</option>
+                </select>
               </div>
             </div>
-          </div>
 
-          <div className="form-group row mb-0">
-            <label className="col-sm-2 col-form-label">Sort by</label>
-            <div
-              className="col-md-9 d-flex flex-wrap align-content-around"
-              style={{ paddingTop: "calc(.375rem + 1px)", paddingBottom: "calc(.375rem + 1px)" }}
-            >
-              <div className="custom-control custom-radio mr-3 mb-1">
-                <input
-                  id="sortName"
-                  className="custom-control-input"
-                  type="radio"
-                  value="name"
-                  checked={sort === "name"}
-                  onChange={() => setSort("name")}
-                  name="sort"
-                />
-                <label className="custom-control-label" htmlFor="sortName">
-                  name
-                </label>
-              </div>
+            <div className="form-group row mb-0">
+              <label className="col-sm-2 col-form-label">Sort type</label>
+              <div
+                className="col-sm-9 d-flex flex-wrap align-content-around"
+                style={{ paddingTop: "calc(.375rem + 1px)", paddingBottom: "calc(.375rem + 1px)" }}
+              >
+                <div className="custom-control custom-radio mr-3 mb-1">
+                  <input
+                    id="orderAscending"
+                    className="custom-control-input"
+                    type="radio"
+                    value="asc"
+                    checked={order === "asc"}
+                    onChange={() => setOrder("asc")}
+                    name="order"
+                  />
+                  <label className="custom-control-label" htmlFor="orderAscending">
+                    Ascending
+                  </label>
+                </div>
 
-              <div className="custom-control custom-radio mr-3 mb-1">
-                <input
-                  id="sortUpdatedAt"
-                  className="custom-control-input"
-                  type="radio"
-                  value="updatedat"
-                  checked={sort === "updatedat"}
-                  onChange={() => setSort("updatedat")}
-                  name="sort"
-                />
-                <label className="custom-control-label" htmlFor="sortUpdatedAt">
-                  updatedAt
-                </label>
-              </div>
-
-              <div className="custom-control custom-radio mr-3 mb-1">
-                <input
-                  id="sortCreatedAt"
-                  className="custom-control-input"
-                  type="radio"
-                  value="createdat"
-                  checked={sort === "createdat"}
-                  onChange={() => setSort("createdat")}
-                  name="sort"
-                />
-                <label className="custom-control-label" htmlFor="sortCreatedAt">
-                  createdAt
-                </label>
-              </div>
-
-              <div className="custom-control custom-radio mr-3 mb-1">
-                <input
-                  id="sortPrice"
-                  className="custom-control-input"
-                  type="radio"
-                  value="price"
-                  checked={sort === "price"}
-                  onChange={() => setSort("price")}
-                  name="sort"
-                />
-                <label className="custom-control-label" htmlFor="sortPrice">
-                  price
-                </label>
-              </div>
-
-              <div className="custom-control custom-radio mr-3 mb-1">
-                <input
-                  id="sortDuration"
-                  className="custom-control-input"
-                  type="radio"
-                  value="duration"
-                  checked={sort === "duration"}
-                  onChange={() => setSort("duration")}
-                  name="sort"
-                />
-                <label className="custom-control-label" htmlFor="sortDuration">
-                  duration
-                </label>
-              </div>
-
-              <div className="custom-control custom-radio mr-3 mb-1">
-                <input
-                  id="sortLanguage"
-                  className="custom-control-input"
-                  type="radio"
-                  value="language"
-                  checked={sort === "language"}
-                  onChange={() => setSort("language")}
-                  name="sort"
-                />
-                <label className="custom-control-label" htmlFor="sortLanguage">
-                  language
-                </label>
-              </div>
-
-              <div className="custom-control custom-radio mr-3 mb-1">
-                <input
-                  id="sortInstructor"
-                  className="custom-control-input"
-                  type="radio"
-                  value="instructor"
-                  checked={sort === "instructor"}
-                  onChange={() => setSort("instructor")}
-                  name="sort"
-                />
-                <label className="custom-control-label" htmlFor="sortInstructor">
-                  instructor
-                </label>
-              </div>
-
-              <div className="custom-control custom-radio mr-3 mb-1">
-                <input
-                  id="sortLevel"
-                  className="custom-control-input"
-                  type="radio"
-                  value="level"
-                  checked={sort === "level"}
-                  onChange={() => setSort("level")}
-                  name="sort"
-                />
-                <label className="custom-control-label" htmlFor="sortLevel">
-                  level
-                </label>
-              </div>
-
-              <div className="custom-control custom-radio mr-3 mb-1">
-                <input
-                  id="sortCategory"
-                  className="custom-control-input"
-                  type="radio"
-                  value="category"
-                  checked={sort === "category"}
-                  onChange={() => setSort("category")}
-                  name="sort"
-                />
-                <label className="custom-control-label" htmlFor="sortCategory">
-                  category
-                </label>
+                <div className="custom-control custom-radio mr-3 mb-1">
+                  <input
+                    id="orderDescending"
+                    className="custom-control-input"
+                    type="radio"
+                    value="desc"
+                    checked={order === "desc"}
+                    onChange={() => setOrder("desc")}
+                    name="order"
+                  />
+                  <label className="custom-control-label" htmlFor="orderDescending" style={{ maxWidth: "200px" }}>
+                    Descending
+                  </label>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      {/* SORT CONTROL - END */}
+        {/* SORT CONTROL - END */}
 
-      {/* FILTER CONTROL - START */}
-      <div className="card mb-1">
-        <div className="card-body pt-2 pb-2">
-          <div className="form-group row mb-0">
-            <label className="col-sm-2 col-form-label">Filer by level</label>
-            <div
-              className="col-md-10 d-flex flex-wrap align-content-around"
-              style={{ paddingTop: "calc(.375rem + 1px)", paddingBottom: "calc(.375rem + 1px)" }}
-            >
-              <div className="custom-control custom-radio mr-3 mb-1">
-                <input
-                  id="filterLevelBeginner"
-                  className="custom-control-input"
-                  type="radio"
-                  value="Beginner"
-                  checked={filterBy === "level" && filterQuery === "Beginner"}
-                  onChange={() => {
+        {/* FILTER CONTROL - START */}
+        <div className="card mb-1">
+          <div className="card-body pt-2 pb-2">
+            <div className="form-group row mb-0">
+              <label className="col-sm-2 col-form-label">Filer by level</label>
+              <div
+                className="col-sm-10 d-flex flex-wrap align-content-around"
+                style={{ paddingTop: "calc(.375rem + 1px)", paddingBottom: "calc(.375rem + 1px)" }}
+              >
+                <select
+                  className="custom-select"
+                  name="filter"
+                  value={filterQuery}
+                  onChange={(e) => {
                     setFilterBy("level");
-                    setFilterQuery("Beginner");
+                    setFilterQuery(e.target.value);
                   }}
-                  name="filterquery"
-                />
-                <label className="custom-control-label" htmlFor="filterLevelBeginner">
-                  Beginner
-                </label>
-              </div>
-
-              <div className="custom-control custom-radio mr-3 mb-1">
-                <input
-                  id="filterLevelIntermediate"
-                  className="custom-control-input"
-                  type="radio"
-                  value="Intermediate"
-                  checked={filterBy === "level" && filterQuery === "Intermediate"}
-                  onChange={() => {
-                    setFilterBy("level");
-                    setFilterQuery("Intermediate");
-                  }}
-                  name="filterquery"
-                />
-                <label className="custom-control-label" htmlFor="filterLevelIntermediate">
-                  Intermediate
-                </label>
-              </div>
-
-              <div className="custom-control custom-radio mr-3 mb-1">
-                <input
-                  id="filterLevelAdvanced"
-                  className="custom-control-input"
-                  type="radio"
-                  value="Advanced"
-                  checked={filterBy === "level" && filterQuery === "Advanced"}
-                  onChange={() => {
-                    setFilterBy("level");
-                    setFilterQuery("Advanced");
-                  }}
-                  name="filterquery"
-                />
-                <label className="custom-control-label" htmlFor="filterLevelAdvanced">
-                  Advanced
-                </label>
-              </div>
-
-              <div className="custom-control custom-radio mr-3 mb-1">
-                <input
-                  id="filterLevelOther"
-                  className="custom-control-input"
-                  type="radio"
-                  value="Other!"
-                  checked={filterBy === "level" && filterQuery === "Other!"}
-                  onChange={() => {
-                    setFilterBy("level");
-                    setFilterQuery("Other!");
-                  }}
-                  name="filterquery"
-                />
-                <label className="custom-control-label" htmlFor="filterLevelOther">
-                  Other!
-                </label>
+                >
+                  <option value="level>>"></option>
+                  <option value="level>>Beginner">Beginner</option>
+                  <option value="level>>Intermediate">Intermediate</option>
+                  <option value="level>>Advanced">Advanced</option>
+                  <option value="level>>Other!">Other!</option>
+                </select>
               </div>
             </div>
-          </div>
 
-          <div className="form-group row mb-0">
-            <label className="col-sm-2 col-form-label">Filer by category</label>
-            <div
-              className="col-md-10 d-flex flex-wrap align-content-around"
-              style={{ paddingTop: "calc(.375rem + 1px)", paddingBottom: "calc(.375rem + 1px)" }}
-            >
-              <div className="custom-control custom-radio mr-3 mb-1">
-                <input
-                  id="filterCategoryProgramming"
-                  className="custom-control-input"
-                  type="radio"
-                  value="Programming"
-                  checked={filterBy === "category" && filterQuery === "Programming"}
-                  onChange={() => {
+            <div className="form-group row mb-0">
+              <label className="col-sm-2 col-form-label">Filer by category</label>
+              <div
+                className="col-sm-10 d-flex flex-wrap align-content-around"
+                style={{ paddingTop: "calc(.375rem + 1px)", paddingBottom: "calc(.375rem + 1px)" }}
+              >
+                <select
+                  className="custom-select"
+                  name="filter"
+                  value={filterQuery}
+                  onChange={(e) => {
                     setFilterBy("category");
-                    setFilterQuery("Programming");
+                    setFilterQuery(e.target.value);
                   }}
-                  name="filterquery"
-                />
-                <label className="custom-control-label" htmlFor="filterCategoryProgramming">
-                  Programming
-                </label>
-              </div>
-
-              <div className="custom-control custom-radio mr-3 mb-1">
-                <input
-                  id="filterCategoryDesign"
-                  className="custom-control-input"
-                  type="radio"
-                  value="Design"
-                  checked={filterBy === "category" && filterQuery === "Design"}
-                  onChange={() => {
-                    setFilterBy("category");
-                    setFilterQuery("Design");
-                  }}
-                  name="filterquery"
-                />
-                <label className="custom-control-label" htmlFor="filterCategoryDesign">
-                  Design
-                </label>
-              </div>
-
-              <div className="custom-control custom-radio mr-3 mb-1">
-                <input
-                  id="filterCategoryMarketing"
-                  className="custom-control-input"
-                  type="radio"
-                  value="Marketing"
-                  checked={filterBy === "category" && filterQuery === "Marketing"}
-                  onChange={() => {
-                    setFilterBy("category");
-                    setFilterQuery("Marketing");
-                  }}
-                  name="filterquery"
-                />
-                <label className="custom-control-label" htmlFor="filterCategoryMarketing">
-                  Marketing
-                </label>
-              </div>
-
-              <div className="custom-control custom-radio mr-3 mb-1">
-                <input
-                  id="filterCategoryBusiness"
-                  className="custom-control-input"
-                  type="radio"
-                  value="Business"
-                  checked={filterBy === "category" && filterQuery === "Business"}
-                  onChange={() => {
-                    setFilterBy("category");
-                    setFilterQuery("Business");
-                  }}
-                  name="filterquery"
-                />
-                <label className="custom-control-label" htmlFor="filterCategoryBusiness">
-                  Business
-                </label>
-              </div>
-
-              <div className="custom-control custom-radio mr-3 mb-1">
-                <input
-                  id="filterCategoryPersonalDevelopment"
-                  className="custom-control-input"
-                  type="radio"
-                  value="Personal Development"
-                  checked={filterBy === "category" && filterQuery === "Personal Development"}
-                  onChange={() => {
-                    setFilterBy("category");
-                    setFilterQuery("Personal Development");
-                  }}
-                  name="filterquery"
-                />
-                <label className="custom-control-label" htmlFor="filterCategoryPersonalDevelopment">
-                  Personal Development
-                </label>
-              </div>
-
-              <div className="custom-control custom-radio mr-3 mb-1">
-                <input
-                  id="filterCategoryOther"
-                  className="custom-control-input"
-                  type="radio"
-                  value="Other!"
-                  checked={filterBy === "category" && filterQuery === "Other!"}
-                  onChange={() => {
-                    setFilterBy("category");
-                    setFilterQuery("Other!");
-                  }}
-                  name="filterquery"
-                />
-                <label className="custom-control-label" htmlFor="filterCategoryOther">
-                  Other!
-                </label>
+                >
+                  <option value="category>>"></option>
+                  <option value="category>>Business">Business</option>
+                  <option value="category>>Design">Design</option>
+                  <option value="category>>Marketing">Marketing</option>
+                  <option value="category>>Personal Development">Personal Development</option>
+                  <option value="category>>Programming">Programming</option>
+                  <option value="category>>Other!">Other!</option>
+                </select>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      {/* FILTER CONTROL - END */}
+        {/* FILTER CONTROL - END */}
 
-      {/* SEARCH CONTROL - START */}
-
-      <div className="card">
-        <div className="card-body pt-2 pb-2">
-          <div className="form-group row mb-0">
-            <label htmlFor="searh" className="col-sm-2 col-form-label">
-              Search
-            </label>
-            <div className="col-sm-5 input-group">
-              <input
-                aria-label="Search for..."
-                type="text"
-                id="searh"
-                className="form-control"
-                value={searchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
-                placeholder="Search for..."
-                onKeyDown={onSearchEnter}
-              />
-              <span className="input-group-append">
-                <button className="btn btn-primary" type="button" onClick={onSearchClick}>
-                  <i className="fas fa-search"></i>
-                </button>
-              </span>
+        {/* SEARCH CONTROL - START */}
+        <div className="card">
+          <div className="card-body pt-2 pb-2">
+            <div className="form-group row mb-0">
+              <label htmlFor="searh" className="col-sm-2 col-form-label">
+                Search
+              </label>
+              <div className="col-sm-5 input-group">
+                <input
+                  aria-label="Search for..."
+                  type="text"
+                  id="searh"
+                  className="form-control"
+                  value={searchValue}
+                  onChange={(e) => setSearchValue(e.target.value)}
+                  placeholder="Search for..."
+                  onKeyDown={onSearchEnter}
+                />
+                <span className="input-group-append">
+                  <button className="btn btn-primary" type="button" onClick={onSearchClick}>
+                    <i className="fas fa-search"></i>
+                  </button>
+                </span>
+              </div>
             </div>
           </div>
         </div>
+        {/* SEARCH CONTROL - END */}
       </div>
-      {/* SEARCH CONTROL - END */}
 
       <CourseTable courses={courses} />
     </>
