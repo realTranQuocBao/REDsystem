@@ -47,6 +47,7 @@ const UserEditPage = () => {
       console.log(idParam);
       loadData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idParam]);
 
   const onSubmit = (data: IUser) => {

@@ -86,8 +86,6 @@ REACT_APP_API_ENDPOINT=http://localhost:5000/api/v1
 REACT_APP_PUBLIC_URL=http://localhost:3000
 ```
 
-> For security reasons, XXXXXXXXXXXXXXXX will be sent via email.
-
 ### 2. Run the following command to install packages and launch the Backend:
 
 ```
