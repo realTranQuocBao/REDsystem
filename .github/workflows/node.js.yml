@@ -39,9 +39,9 @@ jobs:
           echo test, and deploy your project.
           ls -la
 
-      # - name: Install dependencies
-      # - run: |
-      #     cd backend
-      #     ls -la
+      - name: Install dependencies
+      - run: |
+          cd backend
+          mkdir hihi
     # - run: npm run build --if-present
     # - run: npm test
