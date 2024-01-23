@@ -36,6 +36,10 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
 
+      - name: Install dependencies
+        run: |
+          mkdir hihi
+          echo "Dependencies installed successfully!"
       # - name: Install dependencies
       #   run: mkdir hihi
     # - run: npm run build --if-present
