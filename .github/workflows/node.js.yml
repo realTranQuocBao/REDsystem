@@ -40,7 +40,7 @@ jobs:
         run: |
           cd backend
           npm run beapp
-          echo "Dependencies installed successfully!ok"
+          echo "Dependencies installed successfully!"
 
       - name: Print environment variables
         run: |
