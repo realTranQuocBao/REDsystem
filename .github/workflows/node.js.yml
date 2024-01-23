@@ -40,6 +40,10 @@ jobs:
         run: |
           mkdir hihi
           echo "Dependencies installed successfully!"
+
+      - name: Print environment variables
+        run: |
+          echo "GitHub Actor: $GITHUB_ACTOR"
       # - name: Install dependencies
       #   run: mkdir hihi
     # - run: npm run build --if-present
