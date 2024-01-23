@@ -17,9 +17,10 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-      # - uses: actions/checkout@v3
-      # with:
-      # path: REDsystem
+      - name: Checkout repository
+      - uses: actions/checkout@v3
+        with:
+          path: REDsystem
       # - name: Use Node.js ${{ matrix.node-version }}
       #   uses: actions/setup-node@v3
       #   with:
@@ -36,9 +37,9 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
 
-      - name: Install dependencies
-      - run: |
-          cd backend
-          ls -la
+      # - name: Install dependencies
+      # - run: |
+      #     cd backend
+      #     ls -la
     # - run: npm run build --if-present
     # - run: npm test
