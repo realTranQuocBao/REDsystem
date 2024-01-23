@@ -38,7 +38,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          mkdir hihi
+          cd backend
+          npm run beapp
           echo "Dependencies installed successfully!"
 
       - name: Print environment variables
