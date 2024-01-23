@@ -47,7 +47,7 @@ jobs:
           echo "GitHub Repository: $GITHUB_REPOSITORY"
           echo "GitHub Event Name: $GITHUB_EVENT_NAME"
           echo "GitHub Event Path: $GITHUB_EVENT_PATH"
-          echo "GitHub Workspace: ${{$GITHUB_WORKSPACE}}"
+          echo "GitHub Workspace: $GITHUB_WORKSPACE"
       # - name: Install dependencies
       #   run: mkdir hihi
     # - run: npm run build --if-present
