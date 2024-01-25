@@ -37,7 +37,9 @@ jobs:
           echo test, and deploy your project.
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          cd backend
+          npm install
 
       - name: Build and test
         run: npm run build && npm test
