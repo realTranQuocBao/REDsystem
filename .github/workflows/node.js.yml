@@ -47,7 +47,12 @@ jobs:
           cd ~/deploy/REDsystem/backend
           source ~/setup/backend.redsys
           env | grep "MONGO_CONNECTION_URI\|PORT\|NODE_ENV\|MIN_TIME_TO_CREATE_KEY\|KEY_AVAILABILITY_TIME\|ACCESS_JWT_SECRET\|ACCESS_TOKEN_EXPIRES_IN_MINUTE\|REFRESH_JWT_SECRET\|REFRESH_TOKEN_EXPIRES_IN_MINUTE" > .env
-          pm2 start --watch --force dist/server.js --ignore-watch "node_modules logs"
+
+          if pm2 info REDsystem-backend &>/dev/null; then
+            pm2 delete REDsystem-backend
+          fi
+
+          pm2 start --watch dist/server.js --name REDsystem-backend --ignore-watch "node_modules logs"
           echo "Deploy successfully!"
 
       # - name: Print environment variables
