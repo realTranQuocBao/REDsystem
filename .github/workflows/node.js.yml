@@ -42,15 +42,17 @@ jobs:
           npm install
 
       - name: Build and test
-        run: npm run build && npm test
+        run: |
+          cd backend
+          source ~/setup/backend.redsys
+          env | grep "MONGO_CONNECTION_URI\|PORT\|NODE_ENV\|MIN_TIME_TO_CREATE_KEY\|KEY_AVAILABILITY_TIME\|ACCESS_JWT_SECRET\|ACCESS_TOKEN_EXPIRES_IN_MINUTE\|REFRESH_JWT_SECRET\|REFRESH_TOKEN_EXPIRES_IN_MINUTE" > .env
+          npm run build
+          npm test
 
       - name: Deploy to AWS
         run: |
           cd backend
           cp -r * ~/deploy/REDsystem/backend
-          source ~/setup/backend.redsys
-          env | grep "MONGO_CONNECTION_URI\|PORT\|NODE_ENV\|MIN_TIME_TO_CREATE_KEY\|KEY_AVAILABILITY_TIME\|ACCESS_JWT_SECRET\|ACCESS_TOKEN_EXPIRES_IN_MINUTE\|REFRESH_JWT_SECRET\|REFRESH_TOKEN_EXPIRES_IN_MINUTE" > .env
-          npm run build
           pm2 start dist/server.js
           echo "Deploy successfully!"
 
