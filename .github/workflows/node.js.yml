@@ -5,11 +5,10 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["dev-bao"]
 
 jobs:
   build:
-
     runs-on: self-hosted
 
     strategy:
@@ -18,12 +17,50 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # - name: Use Node.js ${{ matrix.node-version }}
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: ${{ matrix.node-version }}
+      #     cache: "npm"
+
+      - name: Install dependencies
+        run: |
+          cd backend
+          npm install
+
+      - name: Build (and test)
+        run: |
+          cd backend
+          source ~/setup/backend.redsys
+          env | grep "MONGO_CONNECTION_URI\|PORT\|NODE_ENV\|MIN_TIME_TO_CREATE_KEY\|KEY_AVAILABILITY_TIME\|ACCESS_JWT_SECRET\|ACCESS_TOKEN_EXPIRES_IN_MINUTE\|REFRESH_JWT_SECRET\|REFRESH_TOKEN_EXPIRES_IN_MINUTE" > .env
+          npm run build
+
+      - name: Deploy to AWS
+        run: |
+          cd backend
+          mkdir -p ~/deploy/REDsystem/backend
+          rm -rf ~/deploy/REDsystem/backend/*
+          cp -r * ~/deploy/REDsystem/backend
+          cd ~/deploy/REDsystem/backend
+          source ~/setup/backend.redsys
+          env | grep "MONGO_CONNECTION_URI\|PORT\|NODE_ENV\|MIN_TIME_TO_CREATE_KEY\|KEY_AVAILABILITY_TIME\|ACCESS_JWT_SECRET\|ACCESS_TOKEN_EXPIRES_IN_MINUTE\|REFRESH_JWT_SECRET\|REFRESH_TOKEN_EXPIRES_IN_MINUTE" > .env
+
+          if pm2 info REDsystem-backend &>/dev/null; then
+            pm2 delete REDsystem-backend
+          fi
+
+          pm2 start dist/server.js --name REDsystem-backend --watch --ignore-watch "node_modules logs"
+          echo "Deploy successfully!"
+
+      # - name: Print environment variables
+      #   run: |
+      #     echo "GitHub Actor: $GITHUB_ACTOR"
+      #     echo "GitHub Repository: $GITHUB_REPOSITORY"
+      #     echo "GitHub Event Name: $GITHUB_EVENT_NAME"
+      #     echo "GitHub Event Path: $GITHUB_EVENT_PATH"
+      #     echo "GitHub Workspace: $GITHUB_WORKSPACE"
     # - run: npm run build --if-present
     # - run: npm test
