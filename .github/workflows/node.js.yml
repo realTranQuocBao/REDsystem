@@ -53,6 +53,7 @@ jobs:
         run: |
           cd backend
           cp -r * ~/deploy/REDsystem/backend
+          cd ~/deploy/REDsystem/backend
           pm2 start dist/server.js
           echo "Deploy successfully!"
 
