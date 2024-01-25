@@ -51,9 +51,12 @@ jobs:
       - name: Deploy to AWS
         run: |
           cd backend
+          mkdir -p ~/deploy/REDsystem/backend
           rm -rf ~/deploy/REDsystem/backend/*
           cp -r * ~/deploy/REDsystem/backend
           cd ~/deploy/REDsystem/backend
+          source ~/setup/backend.redsys
+          env | grep "MONGO_CONNECTION_URI\|PORT\|NODE_ENV\|MIN_TIME_TO_CREATE_KEY\|KEY_AVAILABILITY_TIME\|ACCESS_JWT_SECRET\|ACCESS_TOKEN_EXPIRES_IN_MINUTE\|REFRESH_JWT_SECRET\|REFRESH_TOKEN_EXPIRES_IN_MINUTE" > .env
           pm2 start dist/server.js
           echo "Deploy successfully!"
 
