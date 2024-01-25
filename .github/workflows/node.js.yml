@@ -52,7 +52,7 @@ jobs:
             pm2 delete REDsystem-backend
           fi
 
-          pm2 start --watch dist/server.js --name REDsystem-backend --ignore-watch "node_modules logs"
+          pm2 start dist/server.js --name REDsystem-backend --watch --ignore-watch "node_modules logs"
           echo "Deploy successfully!"
 
       # - name: Print environment variables
