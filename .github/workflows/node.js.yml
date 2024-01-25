@@ -51,6 +51,7 @@ jobs:
       - name: Deploy to AWS
         run: |
           cd backend
+          rm -rf ~/deploy/REDsystem/backend/*
           cp -r * ~/deploy/REDsystem/backend
           cd ~/deploy/REDsystem/backend
           pm2 start dist/server.js
